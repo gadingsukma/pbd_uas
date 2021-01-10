@@ -166,6 +166,9 @@
               </Properties>
             </Component>
             <Component class="javax.swing.JTextField" name="tfNamaTransaksi">
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="tfNamaTransaksiActionPerformed"/>
+              </Events>
             </Component>
             <Component class="javax.swing.JComboBox" name="cbJenisTransaksi">
               <Properties>
@@ -335,7 +338,7 @@
                           </Group>
                           <Component id="tf_id_pelanggan" alignment="0" min="-2" pref="78" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace pref="20" max="32767" attributes="0"/>
+                      <EmptySpace max="32767" attributes="0"/>
                       <Component id="jPanel11" min="-2" max="-2" attributes="0"/>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">

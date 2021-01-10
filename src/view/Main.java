@@ -521,6 +521,12 @@ public class Main extends javax.swing.JFrame {
 
         jLabel4.setText("Berat");
 
+        tfNamaTransaksi.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tfNamaTransaksiActionPerformed(evt);
+            }
+        });
+
         cbJenisTransaksi.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cbJenisTransaksiActionPerformed(evt);
@@ -752,7 +758,7 @@ public class Main extends javax.swing.JFrame {
                         .addComponent(tfTeleponPelanggan, javax.swing.GroupLayout.Alignment.LEADING)
                         .addComponent(tfNamaPelanggan, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 240, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(tf_id_pelanggan, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 20, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jPanel11, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1605,10 +1611,10 @@ public class Main extends javax.swing.JFrame {
 
     private void btnSimpanJenisActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSimpanJenisActionPerformed
         // TODO add your handling code here:
-        String nm_jenis = tfNamaJenis.getText();
-        String id_jns = tf_idjenis.getText();
+        String nm_jenis = tfNamaJenis.getText().toUpperCase();
+        String id_jns = tf_idjenis.getText().toUpperCase();
         Float brt_jenis = Float.parseFloat(spinnerBeratJenis.getValue().toString());
-        Integer hrg = Integer.parseInt(tfHargaJenis.getText());
+        Integer hrg = Integer.parseInt(tfHargaJenis.getText().toUpperCase());
         String sql;
         try {
             sql = "{call DML_JENIS(?,?,?,?,?)}";
@@ -1652,7 +1658,7 @@ public class Main extends javax.swing.JFrame {
 
     private void btnSimpanDiskonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSimpanDiskonActionPerformed
         // TODO add your handling code here:
-        String nm_diskon = tfNamaDiskon.getText();
+        String nm_diskon = tfNamaDiskon.getText().toUpperCase();
         int id_diskon = Integer.valueOf(tf_id_diskon.getText());
         int jml_diskon = Integer.valueOf(spinnerJumlahDiskon.getValue().toString());
 
@@ -1691,7 +1697,7 @@ public class Main extends javax.swing.JFrame {
 
     private void btnSimpanMemberActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSimpanMemberActionPerformed
         // TODO add your handling code here:
-        String nm_jns_member = tfNamaJenisMember.getText();
+        String nm_jns_member = tfNamaJenisMember.getText().toUpperCase();
         int id_diskon_member = Integer.valueOf(tf_jns_member.getText());
         String sql;
         try {
@@ -1714,11 +1720,11 @@ public class Main extends javax.swing.JFrame {
 
     private void btnSimpanPelangganActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSimpanPelangganActionPerformed
         // TODO add your handling code here:
-        String nm_pelanggan = tfNamaPelanggan.getText();
-        String id_pelanggan = tf_id_pelanggan.getText();
-        String no_hp = tfTeleponPelanggan.getText();
-        String alamat = tfAlamatPelanggan.getText();
-        String status = cbStatusPelanggan.getSelectedItem().toString();
+        String nm_pelanggan = tfNamaPelanggan.getText().toUpperCase();
+        String id_pelanggan = tf_id_pelanggan.getText().toUpperCase();
+        String no_hp = tfTeleponPelanggan.getText().toUpperCase();
+        String alamat = tfAlamatPelanggan.getText().toUpperCase();
+        String status = cbStatusPelanggan.getSelectedItem().toString().toUpperCase();
         String sql;
         try {
             sql = "{call DML_PELANGGAN(?,?,?,?,?,?)}";
@@ -1741,6 +1747,10 @@ public class Main extends javax.swing.JFrame {
         }
 
     }//GEN-LAST:event_btnSimpanPelangganActionPerformed
+
+    private void tfNamaTransaksiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tfNamaTransaksiActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_tfNamaTransaksiActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
