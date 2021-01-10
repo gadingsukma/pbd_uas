@@ -49,8 +49,8 @@ public class Login extends javax.swing.JFrame {
 //            connect = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:orcl", "alvian2", "1234");
             String sql = "SELECT * FROM KARYAWAN WHERE ID_KARYAWAN=? AND PASSWORD=?";
             p = connect.prepareStatement(sql);
-            p.setString(1, tfUsername.getText());
-            p.setString(2, pfPassword.getText());
+            p.setString(1, tfUsername.getText().toUpperCase());
+            p.setString(2, pfPassword.getText().toUpperCase());
             rs = p.executeQuery();
 
             if (rs.next()) {

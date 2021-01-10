@@ -236,12 +236,12 @@ public class SignUp extends javax.swing.JFrame {
         try {
             String sql = "{ call simpanKaryawan(?,?,?,?,?,?,?) }";
             c = connect.prepareCall(sql);
-            c.setString(1, tfId.getText());
-            c.setString(2, tfNama.getText());
-            c.setString(3, tfAlamat.getText());
-            c.setString(4, (String) cbJkel.getSelectedItem());
-            c.setString(5, tfTelepon.getText());
-            c.setString(6, tfPassword.getText());
+            c.setString(1, tfId.getText().toUpperCase());
+            c.setString(2, tfNama.getText().toUpperCase());
+            c.setString(3, tfAlamat.getText().toUpperCase());
+            c.setString(4, cbJkel.getSelectedItem().toString().toUpperCase());
+            c.setString(5, tfTelepon.getText().toUpperCase());
+            c.setString(6, tfPassword.getText().toUpperCase());
             c.registerOutParameter(7, Types.VARCHAR);
             c.executeUpdate();
             String pesan=c.getString(7);
