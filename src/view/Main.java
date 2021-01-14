@@ -34,7 +34,7 @@ public class Main extends javax.swing.JFrame {
     ResultSet rs = null;
 
     DefaultTableModel tblTransaksi = new DefaultTableModel(new Object[]{"ID Transaksi", "ID Pelanggan", "ID Jenis", "ID Diskon", "Tanggal Masuk", "Tanggal Keluar", "Jenis", "Berat (kg)", "Total", "Tipe"}, 0);
-    DefaultTableModel tblPelanggan = new DefaultTableModel(new Object[]{"ID Pelanggan", "Nama", "Alamat", "Telepon", "Status"}, 0);
+    DefaultTableModel tblPelanggan = new DefaultTableModel(new Object[]{"ID Pelanggan","ID Jenis Member", "Nama", "Alamat", "Telepon", "Status", "Poin"}, 0);
     DefaultTableModel tblJenis = new DefaultTableModel(new Object[]{"ID Jenis", "Nama Jenis", "Berat (kg)", "Harga"}, 0);
     DefaultTableModel tblMember = new DefaultTableModel(new Object[]{"ID Jenis Member", "Nama"}, 0);
     DefaultTableModel tblDiskon = new DefaultTableModel(new Object[]{"ID Diskon", "Nama Diskon", "Jumlah Diskon (%)"}, 0);
@@ -74,7 +74,7 @@ public class Main extends javax.swing.JFrame {
         comboBoxStatusPelanggan();
 //        comboBoxPelanggan();
         tampilTableTransaksi();
-//        tampilTablePelanggan();
+        tampilTablePelanggan();
         tampilTableJenis();
         tampilTableJenisMember();
         tampilTableDiskon();
@@ -1135,6 +1135,11 @@ public class Main extends javax.swing.JFrame {
 
         tf_id_diskon.setEditable(false);
         tf_id_diskon.setBackground(new java.awt.Color(204, 204, 204));
+        tf_id_diskon.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tf_id_diskonActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
@@ -1626,7 +1631,7 @@ public class Main extends javax.swing.JFrame {
     private void btnSimpanJenisActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSimpanJenisActionPerformed
         // TODO add your handling code here:
         String nm_jenis = tfNamaJenis.getText().toUpperCase();
-        String id_jns = tf_idjenis.getText().toUpperCase();
+        String id_jns = tf_idjenis.getText();
         Float brt_jenis = Float.parseFloat(spinnerBeratJenis.getValue().toString());
         Integer hrg = Integer.parseInt(tfHargaJenis.getText().toUpperCase());
         String sql;
@@ -1646,6 +1651,7 @@ public class Main extends javax.swing.JFrame {
             }
             
             cbJenisTransaksi.removeAllItems();
+            comboBoxTransaksi();
             
             tampilTableJenis();
             tampilIdJenis();
@@ -1738,8 +1744,8 @@ public class Main extends javax.swing.JFrame {
     private void btnSimpanPelangganActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSimpanPelangganActionPerformed
         // TODO add your handling code here:
         String nm_pelanggan = tfNamaPelanggan.getText().toUpperCase();
-        String id_pelanggan = tf_id_pelanggan.getText().toUpperCase();
-        String no_hp = tfTeleponPelanggan.getText().toUpperCase();
+        String id_pelanggan = tf_id_pelanggan.getText();
+        String no_hp = tfTeleponPelanggan.getText();
         String alamat = tfAlamatPelanggan.getText().toUpperCase();
         String status = cbStatusPelanggan.getSelectedItem().toString().toUpperCase();
         String sql;
@@ -1760,6 +1766,7 @@ public class Main extends javax.swing.JFrame {
             }
             
             cbNamaTransaksi.removeAllItems();
+            comboBoxTransaksiNama();
             
             tampilTablePelanggan();
             tampilIdPelanggan();
@@ -1767,6 +1774,10 @@ public class Main extends javax.swing.JFrame {
         }
 
     }//GEN-LAST:event_btnSimpanPelangganActionPerformed
+
+    private void tf_id_diskonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tf_id_diskonActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_tf_id_diskonActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
