@@ -70,6 +70,7 @@ public class AddEmployee extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         tableKaryawan = new javax.swing.JTable();
         btnHapusTableAdd = new javax.swing.JButton();
+        btnLogoutKaryawan = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -109,6 +110,9 @@ public class AddEmployee extends javax.swing.JFrame {
 
         btnHapusTableAdd.setText("Hapus");
 
+        btnLogoutKaryawan.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/log-outResize.png"))); // NOI18N
+        btnLogoutKaryawan.setText("Lougout");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -118,7 +122,8 @@ public class AddEmployee extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addGap(118, 118, 118)
                         .addComponent(jLabel1)
-                        .addGap(0, 0, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnLogoutKaryawan))
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -152,8 +157,10 @@ public class AddEmployee extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel1)
-                .addGap(44, 44, 44)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1)
+                    .addComponent(btnLogoutKaryawan))
+                .addGap(40, 40, 40)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -230,6 +237,7 @@ public class AddEmployee extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBatalAdd;
     private javax.swing.JButton btnHapusTableAdd;
+    private javax.swing.JButton btnLogoutKaryawan;
     private javax.swing.JButton btnTambahAdd;
     private javax.swing.JComboBox cbJKAdd;
     private javax.swing.JLabel jLabel1;
