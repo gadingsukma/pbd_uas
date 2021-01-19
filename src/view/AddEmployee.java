@@ -10,7 +10,10 @@ import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Types;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import model.Conn;
 import oracle.net.nt.ConnOption;
@@ -20,12 +23,13 @@ import oracle.net.nt.ConnOption;
  * @author L
  */
 public class AddEmployee extends javax.swing.JFrame {
+
     Connection connect = null;
     CallableStatement c = null;
     ResultSet rs = null;
     Statement s = null;
     private PreparedStatement p;
-    
+
     DefaultTableModel tblKaryawan = new DefaultTableModel(new Object[]{"ID Karyawan", "Nama", "Alamat", "Jenis Kelamin", "Telepon", "Password"}, 0);
 
     /**
@@ -34,13 +38,43 @@ public class AddEmployee extends javax.swing.JFrame {
     public AddEmployee() {
         initComponents();
         
+        this.setLocationRelativeTo(null);
+
         btnTambahAdd.setBackground(Color.WHITE);
         btnHapusTableAdd.setBackground(Color.RED);
-        
+
         Conn conn = new Conn();
         conn.setConnections();
         connect = conn.getconnections();
-        
+
+        tampilTableKaryawan();
+    }
+    
+    void tampilTableKaryawan() {
+        try {
+            String sql = "select * from KARYAWAN order by ID_KARYAWAN";
+            p = connect.prepareStatement(sql);
+            rs = p.executeQuery();
+
+            tblKaryawan.setRowCount(0);
+
+            String idKar, nama, alamat, jk, telepon, password;
+
+            while (rs.next()) {
+                idKar = rs.getString("ID_KARYAWAN");
+                nama = rs.getString("NAMA");
+                alamat = rs.getString("ALAMAT");
+                jk = rs.getString("JENIS_KELAMIN");
+                telepon = rs.getString("TELEPON");
+                password = rs.getString("PASSWORD");
+
+                tblKaryawan.addRow(new Object[]{idKar, nama, alamat, jk, telepon, password});
+            }
+            p.close();
+            tableKaryawan.setModel(tblKaryawan);
+        } catch (SQLException se) {
+            System.out.println(se);
+        }
     }
 
     /**
@@ -71,6 +105,7 @@ public class AddEmployee extends javax.swing.JFrame {
         tableKaryawan = new javax.swing.JTable();
         btnHapusTableAdd = new javax.swing.JButton();
         btnLogoutKaryawan = new javax.swing.JButton();
+        btnMenu = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -92,6 +127,11 @@ public class AddEmployee extends javax.swing.JFrame {
         cbJKAdd.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Pria", "Wanita" }));
 
         btnTambahAdd.setText("Tambah");
+        btnTambahAdd.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnTambahAddActionPerformed(evt);
+            }
+        });
 
         btnBatalAdd.setText("Batal");
 
@@ -111,7 +151,19 @@ public class AddEmployee extends javax.swing.JFrame {
         btnHapusTableAdd.setText("Hapus");
 
         btnLogoutKaryawan.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/log-outResize.png"))); // NOI18N
-        btnLogoutKaryawan.setText("Lougout");
+        btnLogoutKaryawan.setText("Logout");
+        btnLogoutKaryawan.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLogoutKaryawanActionPerformed(evt);
+            }
+        });
+
+        btnMenu.setText("Menu");
+        btnMenu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnMenuActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -121,9 +173,7 @@ public class AddEmployee extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(118, 118, 118)
-                        .addComponent(jLabel1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btnLogoutKaryawan))
+                        .addComponent(jLabel1))
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -145,99 +195,129 @@ public class AddEmployee extends javax.swing.JFrame {
                                 .addGap(35, 35, 35)
                                 .addComponent(btnBatalAdd)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 55, Short.MAX_VALUE)
-                                .addComponent(btnTambahAdd)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 110, Short.MAX_VALUE)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 600, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(btnTambahAdd)))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 90, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(511, 511, 511)
+                        .addComponent(btnLogoutKaryawan))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 600, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addGap(533, 533, 533)
                         .addComponent(btnHapusTableAdd)))
+                .addGap(18, 18, 18)
+                .addComponent(btnMenu)
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
+                .addComponent(jLabel1)
+                .addGap(44, 44, 44)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
-                    .addComponent(btnLogoutKaryawan))
+                    .addComponent(jLabel2)
+                    .addComponent(tfIdAdd, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(36, 36, 36)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel3)
+                    .addComponent(tfNamaAdd, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(42, 42, 42)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel4)
+                    .addComponent(tfAlamatAdd, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(45, 45, 45)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel5)
+                    .addComponent(cbJKAdd, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(46, 46, 46)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel6)
+                    .addComponent(tfTeleponAdd, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(51, 51, 51)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel7)
+                    .addComponent(tfPasswordAdd, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(54, 54, 54)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnTambahAdd)
+                    .addComponent(btnBatalAdd))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(14, Short.MAX_VALUE)
+                .addComponent(btnLogoutKaryawan)
                 .addGap(40, 40, 40)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel2)
-                            .addComponent(tfIdAdd, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(36, 36, 36)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel3)
-                            .addComponent(tfNamaAdd, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(42, 42, 42)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel4)
-                            .addComponent(tfAlamatAdd, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(45, 45, 45)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel5)
-                            .addComponent(cbJKAdd, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(46, 46, 46)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel6)
-                            .addComponent(tfTeleponAdd, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(51, 51, 51)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel7)
-                            .addComponent(tfPasswordAdd, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(btnTambahAdd)
-                            .addComponent(btnBatalAdd)))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnMenu, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(34, 34, 34)
                 .addComponent(btnHapusTableAdd)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void btnTambahAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTambahAddActionPerformed
+        // TODO add your handling code here:
+
+        String id_kar = tfIdAdd.getText().toUpperCase();
+        String sql;
+        try {
+            sql = "{call CK_IDKAR(?,?)}";
+            c = connect.prepareCall(sql);
+            c.setString(1, id_kar);
+            c.registerOutParameter(2, Types.INTEGER);
+            c.executeUpdate();
+            if (c.getInt(2) == 1) {
+                JOptionPane.showMessageDialog(null, "Maaf id karyawan sudah digunakan");
+            } else {
+                sql = "{call ADD_KARYAWAN(?,?,?,?,?,?,?)}";
+                c = connect.prepareCall(sql);
+                c.setString(1, id_kar);
+                c.setString(2, tfNamaAdd.getText().toUpperCase());
+                c.setString(3, tfAlamatAdd.getText().toUpperCase());
+                c.setString(4, cbJKAdd.getSelectedItem().toString().toUpperCase());
+                c.setString(5, tfTeleponAdd.getText());
+                c.setString(6, tfPasswordAdd.getText().toUpperCase());
+                c.setString(7, "KARYAWAN");
+                c.executeUpdate();
+                JOptionPane.showMessageDialog(null, "Data karyawan berhasil ditambah");
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        
+        tfIdAdd.setText(null);
+        tfNamaAdd.setText(null);
+        tfAlamatAdd.setText(null);
+        tfTeleponAdd.setText(null);
+        tfPasswordAdd.setText(null);
+        
+        tampilTableKaryawan();
+    }//GEN-LAST:event_btnTambahAddActionPerformed
+
+    private void btnLogoutKaryawanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLogoutKaryawanActionPerformed
+        // TODO add your handling code here:
+        new Login().setVisible(true);
+        this.setVisible(false);
+    }//GEN-LAST:event_btnLogoutKaryawanActionPerformed
+
+    private void btnMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMenuActionPerformed
+        // TODO add your handling code here:
+        new Main().setVisible(true);
+        this.setVisible(false);
+    }//GEN-LAST:event_btnMenuActionPerformed
+
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(AddEmployee.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(AddEmployee.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(AddEmployee.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(AddEmployee.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new AddEmployee().setVisible(true);
-            }
-        });
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBatalAdd;
     private javax.swing.JButton btnHapusTableAdd;
     private javax.swing.JButton btnLogoutKaryawan;
+    private javax.swing.JButton btnMenu;
     private javax.swing.JButton btnTambahAdd;
     private javax.swing.JComboBox cbJKAdd;
     private javax.swing.JLabel jLabel1;

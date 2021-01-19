@@ -16,8 +16,11 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Types;
+import java.util.Date;
 import javax.swing.JOptionPane;
+import javax.swing.RowFilter;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableRowSorter;
 import model.Conn;
 
 /**
@@ -30,11 +33,12 @@ public class Main extends javax.swing.JFrame {
     Statement s = null;
     private int DataRow;
     private PreparedStatement p;
+    DefaultTableModel dm;
     CallableStatement c = null;
     ResultSet rs = null;
 
-    DefaultTableModel tblTransaksi = new DefaultTableModel(new Object[]{"ID Transaksi", "ID Pelanggan", "ID Jenis", "ID Diskon", "Tanggal Masuk", "Tanggal Keluar", "Jenis", "Berat (kg)", "Total", "Tipe"}, 0);
-    DefaultTableModel tblPelanggan = new DefaultTableModel(new Object[]{"ID Pelanggan","ID Jenis Member", "Nama", "Alamat", "Telepon", "Status", "Poin"}, 0);
+//    DefaultTableModel tblTransaksi = new DefaultTableModel(new Object[]{"ID Transaksi", "ID Pelanggan", "ID Jenis", "ID Diskon", "Tanggal Masuk", "Tanggal Keluar", "Jenis", "Berat (kg)", "Total", "Tipe"}, 0);
+    DefaultTableModel tblPelanggan = new DefaultTableModel(new Object[]{"ID Pelanggan", "ID Jenis Member", "Nama", "Alamat", "Telepon", "Status", "Poin"}, 0);
     DefaultTableModel tblJenis = new DefaultTableModel(new Object[]{"ID Jenis", "Nama Jenis", "Berat (kg)", "Harga"}, 0);
     DefaultTableModel tblMember = new DefaultTableModel(new Object[]{"ID Jenis Member", "Nama"}, 0);
     DefaultTableModel tblDiskon = new DefaultTableModel(new Object[]{"ID Diskon", "Nama Diskon", "Jumlah Diskon (%)"}, 0);
@@ -50,7 +54,7 @@ public class Main extends javax.swing.JFrame {
 
         this.setLocationRelativeTo(null);
 
-        btnSimpanTransaksi.setBackground(Color.WHITE);
+//        btnSimpanTransaksi.setBackground(Color.WHITE);
         btnSimpanPelanggan.setBackground(Color.WHITE);
         btnSimpanJenis.setBackground(Color.WHITE);
         btnCetakLaporanTransaksi.setBackground(Color.WHITE);
@@ -58,10 +62,8 @@ public class Main extends javax.swing.JFrame {
         btnSimpanDiskon.setBackground(Color.WHITE);
         btnSimpanMasalah.setBackground(Color.WHITE);
         btnCetakLaporanMasalah.setBackground(Color.WHITE);
-        btnHapusTableTransaksi.setBackground(Color.RED);
+//        btnHapusTableTransaksi.setBackground(Color.RED);
         btnHapusTablePelanggan.setBackground(Color.RED);
-        btnHapusTableJenis.setBackground(Color.RED);
-        btnHapusTableMember.setBackground(Color.RED);
         btnHapusTableDiskon.setBackground(Color.RED);
         btnHapusTableMasalah.setBackground(Color.RED);
 
@@ -69,11 +71,12 @@ public class Main extends javax.swing.JFrame {
         conn.setConnections();
         connect = conn.getconnections();
 
-        comboBoxTransaksi();
-        comboBoxTransaksiNama();
+//        comboBoxTransaksi();
+//        comboBoxTransaksiNama();
         comboBoxStatusPelanggan();
+        comboBoxDiskonMember();
 //        comboBoxPelanggan();
-        tampilTableTransaksi();
+//        tampilTableTransaksi();
         tampilTablePelanggan();
         tampilTableJenis();
         tampilTableJenisMember();
@@ -82,24 +85,25 @@ public class Main extends javax.swing.JFrame {
         tampilIdJenis();
         tampilIdDiskon();
         tampilIdJenisMember();
+//        tampilIdtrans();
         tampilIdPelanggan();
     }
 
-    void comboBoxTransaksi() {
-        try {
-            String sql = "select NAMA_JENIS from JENIS order by 1";
-            s = connect.createStatement();
-            rs = s.executeQuery(sql);
-            while (rs.next()) {
-                cbJenisTransaksi.addItem(rs.getString("NAMA_JENIS"));
-            }
-            s.close();
-
-        } catch (SQLException se) {
-            System.out.println("Koneksi database gagal " + se);
-            System.exit(0);
-        }
-    }
+//    void comboBoxTransaksi() {
+//        try {
+//            String sql = "select NAMA_JENIS from JENIS order by 1";
+//            s = connect.createStatement();
+//            rs = s.executeQuery(sql);
+//            while (rs.next()) {
+//                cbJenisTransaksi.addItem(rs.getString("NAMA_JENIS"));
+//            }
+//            s.close();
+//
+//        } catch (SQLException se) {
+//            System.out.println("Koneksi database gagal " + se);
+//            System.exit(0);
+//        }
+//    }
 
     void comboBoxStatusPelanggan() {
         try {
@@ -117,20 +121,36 @@ public class Main extends javax.swing.JFrame {
         }
     }
     
-    void comboBoxTransaksiNama(){
+     void comboBoxDiskonMember() {
         try {
-            String sql="select NAMA from PELANGGAN order by 1";
-            s=connect.createStatement();
-            rs=s.executeQuery(sql);
-            while(rs.next()){
-                cbNamaTransaksi.addItem(rs.getString("NAMA"));
+            String sql = "select NAMA from JENIS_MEMBER order by 1";
+            s = connect.createStatement();
+            rs = s.executeQuery(sql);
+            while (rs.next()) {
+                cb_diskon_member.addItem(rs.getString("NAMA"));
             }
- 
+            s.close();
+
         } catch (SQLException se) {
             System.out.println("Koneksi database gagal " + se);
             System.exit(0);
         }
     }
+
+//    void comboBoxTransaksiNama() {
+//        try {
+//            String sql = "select NAMA from PELANGGAN order by 1";
+//            s = connect.createStatement();
+//            rs = s.executeQuery(sql);
+//            while (rs.next()) {
+//                cbNamaTransaksi.addItem(rs.getString("NAMA"));
+//            }
+//
+//        } catch (SQLException se) {
+//            System.out.println("Koneksi database gagal " + se);
+//            System.exit(0);
+//        }
+//    }
 
 //    void comboBoxPelanggan(){
 //        try {
@@ -146,7 +166,6 @@ public class Main extends javax.swing.JFrame {
 //            System.exit(0);
 //        }
 //    }
-    
     void filterAngka(KeyEvent a) {
         if (Character.isAlphabetic(a.getKeyChar())) {
             a.consume();
@@ -154,85 +173,61 @@ public class Main extends javax.swing.JFrame {
         }
     }
 
+//    void tampilIdtrans(){
+//        String rnd = "TR"+String.valueOf((new Date()).getTime());
+//        tf_idtrans.setText(rnd);
+//    }
     void tampilIdJenis() {
-        try {
-            String sql = "select max(id_jenis) as id from jenis";
-            p = connect.prepareStatement(sql);
-            ResultSet st = p.executeQuery();
-            st.next();
-            int dataid = st.getInt("id") + 1;
-            tf_idjenis.setText(String.valueOf(dataid));
-        } catch (Exception e) {
-        }
+        long number = (long) Math.floor(Math.random() * 900000000L) + 10000000L;
+        tf_idjenis.setText(String.valueOf(number));
     }
 
     void tampilIdJenisMember() {
-        try {
-            String sql = "select max(id_jenis_member) as id from jenis_member";
-            p = connect.prepareStatement(sql);
-            ResultSet st = p.executeQuery();
-            st.next();
-            int dataid = st.getInt("id") + 1;
-            tf_jns_member.setText(String.valueOf(dataid));
-        } catch (Exception e) {
-        }
+        long number = (long) Math.floor(Math.random() * 900000000L) + 10000000L;
+        tf_jns_member.setText(String.valueOf(number));
     }
 
     void tampilIdDiskon() {
-        try {
-            String sql = "select max(id_diskon) as id from diskon";
-            p = connect.prepareStatement(sql);
-            ResultSet st = p.executeQuery();
-            st.next();
-            int dataid = st.getInt("id") + 1;
-            tf_id_diskon.setText(String.valueOf(dataid));
-        } catch (Exception e) {
-        }
-    }
-    
-    void tampilIdPelanggan(){
-         try {
-            String sql = "select max(id_pelanggan) as id from pelanggan";
-            p = connect.prepareStatement(sql);
-            ResultSet st = p.executeQuery();
-            st.next();
-            int dataid = st.getInt("id") + 1;
-           tf_id_pelanggan.setText(String.valueOf(dataid));
-        } catch (Exception e) {
-        }
+        long number = (long) Math.floor(Math.random() * 900000000L) + 10000000L;
+        tf_id_diskon.setText(String.valueOf(number));
     }
 
-    void tampilTableTransaksi() {
-        try {
-            String sql = "select * from TRANSAKSI order by ID_TRANSAKSI";
-            p = connect.prepareStatement(sql);
-            rs = p.executeQuery();
-
-            tblTransaksi.setRowCount(0);
-
-            String idTransaksi, idPelanggan, idJenis, idDiskon, tglMasuk, tglKeluar, jenis, berat, total, tipe;
-
-            while (rs.next()) {
-                idTransaksi = rs.getString("ID_TRANSAKSI");
-                idPelanggan = rs.getString("ID_PELANGGAN");
-                idJenis = rs.getString("ID_JENIS");
-                idJenis = rs.getString("ID_JENIS");
-                idDiskon = rs.getString("ID_DISKON");
-                tglMasuk = rs.getString("TANGGAL_MASUK");
-                tglKeluar = rs.getString("TANGGAL_KELUAR");
-                jenis = rs.getString("JENIS");
-                berat = rs.getString("BERAT");
-                total = rs.getString("TOTAL");
-                tipe = rs.getString("TIPE");
-
-                tblTransaksi.addRow(new Object[]{idTransaksi, idPelanggan, idJenis, idDiskon, tglMasuk, tglKeluar, jenis, berat, total, tipe});
-            }
-            p.close();
-            tableTransaksi.setModel(tblTransaksi);
-        } catch (SQLException se) {
-            System.out.println(se);
-        }
+    void tampilIdPelanggan() {
+        long number = (long) Math.floor(Math.random() * 900000000L) + 10000000L;
+        tf_id_pelanggan.setText(String.valueOf(number));
     }
+
+//    void tampilTableTransaksi() {
+//        try {
+//            String sql = "select * from TRANSAKSI order by ID_TRANSAKSI";
+//            p = connect.prepareStatement(sql);
+//            rs = p.executeQuery();
+//
+//            tblTransaksi.setRowCount(0);
+//
+//            String idTransaksi, idPelanggan, idJenis, idDiskon, tglMasuk, tglKeluar, jenis, berat, total, tipe;
+//
+//            while (rs.next()) {
+//                idTransaksi = rs.getString("ID_TRANSAKSI");
+//                idPelanggan = rs.getString("ID_PELANGGAN");
+//                idJenis = rs.getString("ID_JENIS");
+//                idJenis = rs.getString("ID_JENIS");
+//                idDiskon = rs.getString("ID_DISKON");
+//                tglMasuk = rs.getString("TANGGAL_MASUK");
+//                tglKeluar = rs.getString("TANGGAL_KELUAR");
+//                jenis = rs.getString("JENIS");
+//                berat = rs.getString("BERAT");
+//                total = rs.getString("TOTAL");
+//                tipe = rs.getString("TIPE");
+//
+//                tblTransaksi.addRow(new Object[]{idTransaksi, idPelanggan, idJenis, idDiskon, tglMasuk, tglKeluar, jenis, berat, total, tipe});
+//            }
+//            p.close();
+//            tableTransaksi.setModel(tblTransaksi);
+//        } catch (SQLException se) {
+//            System.out.println(se);
+//        }
+//    }
 
     void tampilTablePelanggan() {
         try {
@@ -335,73 +330,72 @@ public class Main extends javax.swing.JFrame {
         }
     }
 
-    void tampilTableMasalah() {
-        try {
-            String sql = "select * from MASALAH order by NAMA_BARANG";
-            p = connect.prepareStatement(sql);
-            rs = p.executeQuery();
+//    void tampilTableMasalah() {
+//        try {
+//            String sql = "select * from MASALAH order by NAMA_BARANG";
+//            p = connect.prepareStatement(sql);
+//            rs = p.executeQuery();
+//
+//            tblJenis.setRowCount(0);
+//
+//            String idMasalah, idPelanggan, namaBarang, harga, deskripsi;
+//
+//            while (rs.next()) {
+//                idMasalah = rs.getString("ID_MASALAH");
+//                idPelanggan = rs.getString("ID_PELANGGAN");
+//                namaBarang = rs.getString("NAMA_BARANG");
+//                harga = rs.getString("HARGA");
+//                deskripsi = rs.getString("DESKRIPSI");
+//
+//                tblJenis.addRow(new Object[]{idMasalah, idPelanggan, namaBarang, harga, deskripsi});
+//            }
+//
+//            tableMasalah.setModel(tblMasalah);
+//        } catch (SQLException se) {
+//            System.out.println(se);
+//        }
+//    }
+//    void hapusTableTransaksi() {
+//        int selected = tableTransaksi.getSelectedRow();
+//        String row = tableTransaksi.getModel().getValueAt(selected, 0).toString();
+//
+//        String sql = "delete from TRANSAKSI where ID_TRANSAKSI=" + row;
+//        try {
+//            p = connect.prepareStatement(sql);
+//            p.execute();
+//            JOptionPane.showMessageDialog(null, "Data Terhapus");
+//        } catch (SQLException se) {
+//            System.out.println(se);;
+//        }
+//    }
 
-            tblJenis.setRowCount(0);
+//    void hapusTablePelanggan() {
+//        int selected = tablePelanggan.getSelectedRow();
+//        String row = tablePelanggan.getModel().getValueAt(selected, 0).toString();
+//
+//        String sql = "delete from PELANGGAN where ID_PELANGGAN=" + row;
+//        try {
+//            p = connect.prepareStatement(sql);
+//            p.execute();
+//            JOptionPane.showMessageDialog(null, "Data Terhapus");
+//        } catch (SQLException se) {
+//            System.out.println(se);;
+//        }
+//    }
 
-            String idMasalah, idPelanggan, namaBarang, harga, deskripsi;
-
-            while (rs.next()) {
-                idMasalah = rs.getString("ID_MASALAH");
-                idPelanggan = rs.getString("ID_PELANGGAN");
-                namaBarang = rs.getString("NAMA_BARANG");
-                harga = rs.getString("HARGA");
-                deskripsi = rs.getString("DESKRIPSI");
-
-                tblJenis.addRow(new Object[]{idMasalah, idPelanggan, namaBarang, harga, deskripsi});
-            }
-
-            tableMasalah.setModel(tblMasalah);
-        } catch (SQLException se) {
-            System.out.println(se);
-        }
-    }
-
-    void hapusTableTransaksi() {
-        int selected = tableTransaksi.getSelectedRow();
-        String row = tableTransaksi.getModel().getValueAt(selected, 0).toString();
-
-        String sql = "delete from TRANSAKSI where ID_TRANSAKSI=" + row;
-        try {
-            p = connect.prepareStatement(sql);
-            p.execute();
-            JOptionPane.showMessageDialog(null, "Data Terhapus");
-        } catch (SQLException se) {
-            System.out.println(se);;
-        }
-    }
-
-    void hapusTablePelanggan() {
-        int selected = tablePelanggan.getSelectedRow();
-        String row = tablePelanggan.getModel().getValueAt(selected, 0).toString();
-
-        String sql = "delete from PELANGGAN where ID_PELANGGAN=" + row;
-        try {
-            p = connect.prepareStatement(sql);
-            p.execute();
-            JOptionPane.showMessageDialog(null, "Data Terhapus");
-        } catch (SQLException se) {
-            System.out.println(se);;
-        }
-    }
-
-    void hapusTableJenis() {
-        int selected = tableJenis.getSelectedRow();
-        String row = tableJenis.getModel().getValueAt(selected, 0).toString();
-
-        String sql = "delete from JENIS where ID_JENIS=" + row;
-        try {
-            p = connect.prepareStatement(sql);
-            p.execute();
-            JOptionPane.showMessageDialog(null, "Data Terhapus");
-        } catch (SQLException se) {
-            System.out.println(se);;
-        }
-    }
+//    void hapusTableJenis() {
+//        int selected = tableJenis.getSelectedRow();
+//        String row = tableJenis.getModel().getValueAt(selected, 0).toString();
+//
+//        String sql = "delete from JENIS where ID_JENIS=" + row;
+//        try {
+//            p = connect.prepareStatement(sql);
+//            p.execute();
+//            JOptionPane.showMessageDialog(null, "Data Terhapus");
+//        } catch (SQLException se) {
+//            System.out.println(se);;
+//        }
+//    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -413,22 +407,6 @@ public class Main extends javax.swing.JFrame {
     private void initComponents() {
 
         tabTransaksi = new javax.swing.JTabbedPane();
-        jPanel1 = new javax.swing.JPanel();
-        jLabel2 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
-        cbJenisTransaksi = new javax.swing.JComboBox();
-        spinnerBeratTransaksi = new javax.swing.JSpinner();
-        btnSimpanTransaksi = new javax.swing.JButton();
-        btnHapusFieldsTransaksi = new javax.swing.JButton();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        tableTransaksi = new javax.swing.JTable();
-        btnHapusTableTransaksi = new javax.swing.JButton();
-        jLabel12 = new javax.swing.JLabel();
-        jLabel26 = new javax.swing.JLabel();
-        cbTipeTransaksi = new javax.swing.JComboBox();
-        jPanel10 = new javax.swing.JPanel();
-        cbNamaTransaksi = new javax.swing.JComboBox();
         jPanel2 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
@@ -457,22 +435,24 @@ public class Main extends javax.swing.JFrame {
         btnSimpanJenis = new javax.swing.JButton();
         jScrollPane3 = new javax.swing.JScrollPane();
         tableJenis = new javax.swing.JTable();
-        btnHapusTableJenis = new javax.swing.JButton();
         jLabel25 = new javax.swing.JLabel();
         jPanel12 = new javax.swing.JPanel();
         tf_idjenis = new javax.swing.JTextField();
         jLabel27 = new javax.swing.JLabel();
+        tf_search_jenis = new javax.swing.JTextField();
+        jLabel31 = new javax.swing.JLabel();
         jPanel8 = new javax.swing.JPanel();
         jLabel5 = new javax.swing.JLabel();
         tfNamaJenisMember = new javax.swing.JTextField();
         jScrollPane4 = new javax.swing.JScrollPane();
         tableMember = new javax.swing.JTable();
-        btnHapusTableMember = new javax.swing.JButton();
         btnSimpanMember = new javax.swing.JButton();
         btnHapusFieldMember = new javax.swing.JButton();
         jPanel13 = new javax.swing.JPanel();
         jLabel29 = new javax.swing.JLabel();
         tf_jns_member = new javax.swing.JTextField();
+        tf_search_member = new javax.swing.JTextField();
+        jLabel32 = new javax.swing.JLabel();
         jPanel5 = new javax.swing.JPanel();
         jLabel15 = new javax.swing.JLabel();
         jLabel16 = new javax.swing.JLabel();
@@ -487,6 +467,8 @@ public class Main extends javax.swing.JFrame {
         jPanel14 = new javax.swing.JPanel();
         jLabel28 = new javax.swing.JLabel();
         tf_id_diskon = new javax.swing.JTextField();
+        jLabel33 = new javax.swing.JLabel();
+        cb_diskon_member = new javax.swing.JComboBox<String>();
         jPanel9 = new javax.swing.JPanel();
         jLabel18 = new javax.swing.JLabel();
         jLabel19 = new javax.swing.JLabel();
@@ -518,6 +500,7 @@ public class Main extends javax.swing.JFrame {
         btnCetakLaporanMasalah = new javax.swing.JButton();
         jLabel24 = new javax.swing.JLabel();
         btnLogout = new javax.swing.JButton();
+        btnFormTransaksi = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -531,153 +514,6 @@ public class Main extends javax.swing.JFrame {
                 tabTransaksiPropertyChange(evt);
             }
         });
-
-        jLabel2.setText("Nama");
-
-        jLabel3.setText("Jenis");
-
-        jLabel4.setText("Berat");
-
-        cbJenisTransaksi.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cbJenisTransaksiActionPerformed(evt);
-            }
-        });
-
-        spinnerBeratTransaksi.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                spinnerBeratTransaksiKeyTyped(evt);
-            }
-        });
-
-        btnSimpanTransaksi.setText("Simpan");
-        btnSimpanTransaksi.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnSimpanTransaksiActionPerformed(evt);
-            }
-        });
-
-        btnHapusFieldsTransaksi.setText("Hapus");
-        btnHapusFieldsTransaksi.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnHapusFieldsTransaksiActionPerformed(evt);
-            }
-        });
-
-        tableTransaksi.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
-            },
-            new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
-            }
-        ));
-        tableTransaksi.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                tableTransaksiMouseClicked(evt);
-            }
-        });
-        jScrollPane1.setViewportView(tableTransaksi);
-
-        btnHapusTableTransaksi.setText("Hapus");
-        btnHapusTableTransaksi.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnHapusTableTransaksiActionPerformed(evt);
-            }
-        });
-
-        jLabel12.setText("Tipe");
-
-        jLabel26.setText("Kg");
-
-        cbTipeTransaksi.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Reguler", "Kilat" }));
-
-        jPanel10.setBackground(new java.awt.Color(255, 255, 255));
-
-        javax.swing.GroupLayout jPanel10Layout = new javax.swing.GroupLayout(jPanel10);
-        jPanel10.setLayout(jPanel10Layout);
-        jPanel10Layout.setHorizontalGroup(
-            jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 3, Short.MAX_VALUE)
-        );
-        jPanel10Layout.setVerticalGroup(
-            jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
-        );
-
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel2)
-                    .addComponent(jLabel3)
-                    .addComponent(jLabel4)
-                    .addComponent(jLabel12))
-                .addGap(45, 45, 45)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(cbTipeTransaksi, javax.swing.GroupLayout.Alignment.LEADING, 0, 98, Short.MAX_VALUE)
-                            .addComponent(spinnerBeratTransaksi, javax.swing.GroupLayout.Alignment.LEADING))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel26)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(cbJenisTransaksi, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(cbNamaTransaksi, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
-                                .addComponent(btnHapusFieldsTransaksi)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 86, Short.MAX_VALUE)
-                                .addComponent(btnSimpanTransaksi)))
-                        .addGap(54, 54, 54)))
-                .addComponent(jPanel10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 670, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnHapusTableTransaksi, javax.swing.GroupLayout.Alignment.TRAILING))
-                .addContainerGap())
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
-                    .addComponent(cbNamaTransaksi, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(22, 22, 22)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel3)
-                    .addComponent(cbJenisTransaksi, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(26, 26, 26)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel4)
-                    .addComponent(spinnerBeratTransaksi, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel26))
-                .addGap(33, 33, 33)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel12)
-                    .addComponent(cbTipeTransaksi, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(66, 66, 66)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnSimpanTransaksi)
-                    .addComponent(btnHapusFieldsTransaksi))
-                .addContainerGap(130, Short.MAX_VALUE))
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                .addGap(18, 18, 18)
-                .addComponent(btnHapusTableTransaksi)
-                .addContainerGap())
-            .addComponent(jPanel10, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-        );
-
-        tabTransaksi.addTab("Transaksi", jPanel1);
 
         jLabel1.setText("Nama");
 
@@ -875,13 +711,6 @@ public class Main extends javax.swing.JFrame {
         });
         jScrollPane3.setViewportView(tableJenis);
 
-        btnHapusTableJenis.setText("Hapus");
-        btnHapusTableJenis.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnHapusTableJenisActionPerformed(evt);
-            }
-        });
-
         jLabel25.setText("Kg");
 
         jPanel12.setBackground(new java.awt.Color(255, 255, 255));
@@ -901,6 +730,14 @@ public class Main extends javax.swing.JFrame {
         tf_idjenis.setBackground(new java.awt.Color(204, 204, 204));
 
         jLabel27.setText("ID JENIS");
+
+        tf_search_jenis.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                tf_search_jenisKeyPressed(evt);
+            }
+        });
+
+        jLabel31.setText("Cari Data");
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -931,17 +768,16 @@ public class Main extends javax.swing.JFrame {
                 .addComponent(jPanel12, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 670, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnHapusTableJenis, javax.swing.GroupLayout.Alignment.TRAILING))
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 670, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addGap(407, 407, 407)
+                        .addComponent(jLabel31)
+                        .addGap(27, 27, 27)
+                        .addComponent(tf_search_jenis, javax.swing.GroupLayout.PREFERRED_SIZE, 177, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                .addGap(18, 18, 18)
-                .addComponent(btnHapusTableJenis)
-                .addContainerGap())
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addGap(22, 22, 22)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -964,8 +800,16 @@ public class Main extends javax.swing.JFrame {
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnHapusFieldsJenis)
                     .addComponent(btnSimpanJenis))
-                .addGap(0, 128, Short.MAX_VALUE))
+                .addGap(0, 0, Short.MAX_VALUE))
             .addComponent(jPanel12, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+                .addContainerGap(19, Short.MAX_VALUE)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(tf_search_jenis, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel31, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 310, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(27, 27, 27))
         );
 
         tabTransaksi.addTab("Jenis", jPanel3);
@@ -983,9 +827,12 @@ public class Main extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
+        tableMember.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tableMemberMouseClicked(evt);
+            }
+        });
         jScrollPane4.setViewportView(tableMember);
-
-        btnHapusTableMember.setText("Hapus");
 
         btnSimpanMember.setText("Simpan");
         btnSimpanMember.addActionListener(new java.awt.event.ActionListener() {
@@ -1019,6 +866,14 @@ public class Main extends javax.swing.JFrame {
         tf_jns_member.setEditable(false);
         tf_jns_member.setBackground(new java.awt.Color(204, 204, 204));
 
+        tf_search_member.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                tf_search_memberKeyPressed(evt);
+            }
+        });
+
+        jLabel32.setText("Cari Data");
+
         javax.swing.GroupLayout jPanel8Layout = new javax.swing.GroupLayout(jPanel8);
         jPanel8.setLayout(jPanel8Layout);
         jPanel8Layout.setHorizontalGroup(
@@ -1043,32 +898,39 @@ public class Main extends javax.swing.JFrame {
                 .addComponent(jPanel13, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane4, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 670, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnHapusTableMember, javax.swing.GroupLayout.Alignment.TRAILING))
+                    .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 670, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel8Layout.createSequentialGroup()
+                        .addComponent(jLabel32)
+                        .addGap(26, 26, 26)
+                        .addComponent(tf_search_member, javax.swing.GroupLayout.PREFERRED_SIZE, 177, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         jPanel8Layout.setVerticalGroup(
             jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel8Layout.createSequentialGroup()
-                .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 351, Short.MAX_VALUE)
-                .addGap(18, 18, 18)
-                .addComponent(btnHapusTableMember)
-                .addContainerGap())
             .addComponent(jPanel13, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(jPanel8Layout.createSequentialGroup()
-                .addGap(15, 15, 15)
-                .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel29)
-                    .addComponent(tf_jns_member, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel5)
-                    .addComponent(tfNamaJenisMember, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(45, 45, 45)
-                .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnSimpanMember)
-                    .addComponent(btnHapusFieldMember))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel8Layout.createSequentialGroup()
+                        .addGap(15, 15, 15)
+                        .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel29)
+                            .addComponent(tf_jns_member, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel5)
+                            .addComponent(tfNamaJenisMember, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(45, 45, 45)
+                        .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(btnSimpanMember)
+                            .addComponent(btnHapusFieldMember)))
+                    .addGroup(jPanel8Layout.createSequentialGroup()
+                        .addGap(13, 13, 13)
+                        .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(tf_search_member, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel32))
+                        .addGap(18, 18, 18)
+                        .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 324, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(19, Short.MAX_VALUE))
         );
 
         tabTransaksi.addTab("Member", jPanel8);
@@ -1141,6 +1003,8 @@ public class Main extends javax.swing.JFrame {
             }
         });
 
+        jLabel33.setText("Jenis Member");
+
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
         jPanel5Layout.setHorizontalGroup(
@@ -1154,10 +1018,11 @@ public class Main extends javax.swing.JFrame {
                         .addComponent(btnSimpanDiskon))
                     .addGroup(jPanel5Layout.createSequentialGroup()
                         .addContainerGap()
-                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel15)
-                            .addComponent(jLabel16)
-                            .addComponent(jLabel28))
+                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(jLabel33, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jLabel15, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel16, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jLabel28, javax.swing.GroupLayout.Alignment.LEADING))
                         .addGap(34, 34, 34)
                         .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel5Layout.createSequentialGroup()
@@ -1165,7 +1030,8 @@ public class Main extends javax.swing.JFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jLabel17))
                             .addComponent(tfNamaDiskon, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(tf_id_diskon, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addComponent(tf_id_diskon, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(cb_diskon_member, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 67, Short.MAX_VALUE)
                 .addComponent(jPanel14, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
@@ -1187,6 +1053,10 @@ public class Main extends javax.swing.JFrame {
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel28)
                     .addComponent(tf_id_diskon, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(16, 16, 16)
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel33)
+                    .addComponent(cb_diskon_member, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel15)
@@ -1443,15 +1313,28 @@ public class Main extends javax.swing.JFrame {
             }
         });
 
+        btnFormTransaksi.setText("Transaksi");
+        btnFormTransaksi.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnFormTransaksiActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(tabTransaksi, javax.swing.GroupLayout.PREFERRED_SIZE, 1080, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnLogout)
-                .addGap(0, 14, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnLogout)
+                        .addGap(0, 14, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnFormTransaksi)
+                        .addContainerGap())))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1461,91 +1344,13 @@ public class Main extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(25, 25, 25)
                 .addComponent(btnLogout)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btnFormTransaksi, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(59, 59, 59))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void cbJenisTransaksiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbJenisTransaksiActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_cbJenisTransaksiActionPerformed
-
-    private void btnHapusFieldsTransaksiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHapusFieldsTransaksiActionPerformed
-        // TODO add your handling code here:
-        spinnerBeratTransaksi.setValue(0);
-    }//GEN-LAST:event_btnHapusFieldsTransaksiActionPerformed
-
-    private void btnHapusFieldsPelangganActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHapusFieldsPelangganActionPerformed
-        // TODO add your handling code here:
-        tfNamaPelanggan.setText(null);
-        tfAlamatPelanggan.setText(null);
-        tfTeleponPelanggan.setText(null);
-    }//GEN-LAST:event_btnHapusFieldsPelangganActionPerformed
-
-    private void btnHapusFieldsJenisActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHapusFieldsJenisActionPerformed
-        // TODO add your handling code here:
-
-        String id_jns = tf_idjenis.getText().toUpperCase();
-        String sql;
-        int result = JOptionPane.showConfirmDialog(null, "Apa anda yakin menghapus data dengan id " + id_jns + " ini ?", null, JOptionPane.YES_NO_OPTION);
-        if (result == JOptionPane.YES_OPTION) {
-            try {
-                sql = "{call HAPUS_JENIS(?,?)}";
-                c = connect.prepareCall(sql);
-                c.setString(1, id_jns);
-                c.registerOutParameter(2, Types.INTEGER);
-                c.executeUpdate();
-                if (c.getInt(2) == 0) {
-                    JOptionPane.showMessageDialog(null, "Maaf data tidak ditemukan");
-                } else {
-                    JOptionPane.showMessageDialog(null, "Data berhasil dihapus");
-                }
-                tampilTableJenis();
-                tampilIdJenis();
-            } catch (Exception e) {
-            }
-        }
-
-    }//GEN-LAST:event_btnHapusFieldsJenisActionPerformed
-
-    private void spinnerBeratJenisKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_spinnerBeratJenisKeyTyped
-        // TODO add your handling code here:
-        filterAngka(evt);
-    }//GEN-LAST:event_spinnerBeratJenisKeyTyped
-
-    private void tfHargaJenisKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tfHargaJenisKeyTyped
-        // TODO add your handling code here:
-        filterAngka(evt);
-    }//GEN-LAST:event_tfHargaJenisKeyTyped
-
-    private void tfTeleponPelangganKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tfTeleponPelangganKeyTyped
-        // TODO add your handling code here:
-        filterAngka(evt);
-    }//GEN-LAST:event_tfTeleponPelangganKeyTyped
-
-    private void spinnerBeratTransaksiKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_spinnerBeratTransaksiKeyTyped
-        // TODO add your handling code here:
-        filterAngka(evt);
-    }//GEN-LAST:event_spinnerBeratTransaksiKeyTyped
-
-    private void btnHapusTableTransaksiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHapusTableTransaksiActionPerformed
-        // TODO add your handling code here:
-        hapusTableTransaksi();
-        tampilTableTransaksi();
-    }//GEN-LAST:event_btnHapusTableTransaksiActionPerformed
-
-    private void btnHapusTablePelangganActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHapusTablePelangganActionPerformed
-        // TODO add your handling code here:
-        hapusTablePelanggan();
-        tampilTablePelanggan();
-    }//GEN-LAST:event_btnHapusTablePelangganActionPerformed
-
-    private void btnHapusTableJenisActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHapusTableJenisActionPerformed
-        // TODO add your handling code here:
-        hapusTableJenis();
-        tampilTableJenis();
-    }//GEN-LAST:event_btnHapusTableJenisActionPerformed
 
     private void btnLogoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLogoutActionPerformed
         // TODO add your handling code here:
@@ -1553,34 +1358,40 @@ public class Main extends javax.swing.JFrame {
         this.setVisible(false);
     }//GEN-LAST:event_btnLogoutActionPerformed
 
-    private void tableTransaksiMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableTransaksiMouseClicked
+    private void tabTransaksiPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_tabTransaksiPropertyChange
         // TODO add your handling code here:
+    }//GEN-LAST:event_tabTransaksiPropertyChange
 
-    }//GEN-LAST:event_tableTransaksiMouseClicked
-
-    private void btnHapusFieldMemberActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHapusFieldMemberActionPerformed
+    private void tabTransaksiStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_tabTransaksiStateChanged
         // TODO add your handling code here:
-        String id_jns = tf_jns_member.getText().toUpperCase();
-        String sql;
-        int result = JOptionPane.showConfirmDialog(null, "Apa anda yakin menghapus data dengan id " + id_jns + " ini ?", null, JOptionPane.YES_NO_OPTION);
-        if (result == JOptionPane.YES_OPTION) {
-            try {
-                sql = "{call HAPUS_JENIS_MEMBER(?,?)}";
-                c = connect.prepareCall(sql);
-                c.setString(1, id_jns);
-                c.registerOutParameter(2, Types.INTEGER);
-                c.executeUpdate();
-                if (c.getInt(2) == 0) {
-                    JOptionPane.showMessageDialog(null, "Maaf data tidak ditemukan");
-                } else {
-                    JOptionPane.showMessageDialog(null, "Data berhasil dihapus");
-                }
-                tampilTableJenisMember();
-                tampilIdJenisMember();
-            } catch (Exception e) {
-            }
-        }
-    }//GEN-LAST:event_btnHapusFieldMemberActionPerformed
+    }//GEN-LAST:event_tabTransaksiStateChanged
+
+    private void btnCetakLaporanTransaksiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCetakLaporanTransaksiActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnCetakLaporanTransaksiActionPerformed
+
+    private void btnHapusFieldsMasalahActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHapusFieldsMasalahActionPerformed
+        // TODO add your handling code here:
+        tfNamaBarangMasalah.setText(null);
+        tfHargaMasalah.setText(null);
+        taDeskripsiMasalah.setText(null);
+    }//GEN-LAST:event_btnHapusFieldsMasalahActionPerformed
+
+    private void tf_id_diskonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tf_id_diskonActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_tf_id_diskonActionPerformed
+
+    private void btnHapusTableDiskonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHapusTableDiskonActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnHapusTableDiskonActionPerformed
+
+    private void tableDiskonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableDiskonMouseClicked
+        // TODO add your handling code here:
+        DataRow = tableDiskon.getSelectedRow();
+        tf_id_diskon.setText(tableDiskon.getValueAt(DataRow, 0).toString());
+        tfNamaDiskon.setText(tableDiskon.getValueAt(DataRow, 1).toString());
+        spinnerJumlahDiskon.setValue(Integer.valueOf(tableDiskon.getValueAt(DataRow, 2).toString()));
+    }//GEN-LAST:event_tableDiskonMouseClicked
 
     private void btnHapusFieldsDiskonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHapusFieldsDiskonActionPerformed
         // TODO add your handling code here:
@@ -1606,42 +1417,20 @@ public class Main extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnHapusFieldsDiskonActionPerformed
 
-    private void btnHapusFieldsMasalahActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHapusFieldsMasalahActionPerformed
+    private void btnSimpanDiskonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSimpanDiskonActionPerformed
         // TODO add your handling code here:
-        tfNamaBarangMasalah.setText(null);
-        tfHargaMasalah.setText(null);
-        taDeskripsiMasalah.setText(null);
-    }//GEN-LAST:event_btnHapusFieldsMasalahActionPerformed
-
-    private void btnSimpanTransaksiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSimpanTransaksiActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnSimpanTransaksiActionPerformed
-
-    private void btnCetakLaporanTransaksiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCetakLaporanTransaksiActionPerformed
-        // TODO add your handling code here:
-
-    }//GEN-LAST:event_btnCetakLaporanTransaksiActionPerformed
-
-    private void tfNamaJenisActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tfNamaJenisActionPerformed
-        // TODO add your handling code here:
-
-
-    }//GEN-LAST:event_tfNamaJenisActionPerformed
-
-    private void btnSimpanJenisActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSimpanJenisActionPerformed
-        // TODO add your handling code here:
-        String nm_jenis = tfNamaJenis.getText().toUpperCase();
-        String id_jns = tf_idjenis.getText();
-        Float brt_jenis = Float.parseFloat(spinnerBeratJenis.getValue().toString());
-        Integer hrg = Integer.parseInt(tfHargaJenis.getText().toUpperCase());
+        String nm_diskon = tfNamaDiskon.getText().toUpperCase();
+        String member = cb_diskon_member.getSelectedItem().toString();
+        int id_diskon = Integer.valueOf(tf_id_diskon.getText());
+        int jml_diskon = Integer.valueOf(spinnerJumlahDiskon.getValue().toString());
         String sql;
         try {
-            sql = "{call DML_JENIS(?,?,?,?,?)}";
+            sql = "{call DML_DISKON(?,?,?,?,?)}";
             c = connect.prepareCall(sql);
-            c.setString(1, id_jns);
-            c.setString(2, nm_jenis);
-            c.setFloat(3, brt_jenis);
-            c.setInt(4, hrg);
+            c.setInt(1, id_diskon);
+            c.setString(2, member);
+            c.setString(3, nm_diskon);
+            c.setInt(4, jml_diskon);
             c.registerOutParameter(5, Types.INTEGER);
             c.executeUpdate();
             if (c.getInt(5) == 0) {
@@ -1649,74 +1438,47 @@ public class Main extends javax.swing.JFrame {
             } else {
                 JOptionPane.showMessageDialog(null, "Data Berhasil di update");
             }
-            
-            cbJenisTransaksi.removeAllItems();
-            comboBoxTransaksi();
-            
-            tampilTableJenis();
-            tampilIdJenis();
-        } catch (Exception e) {
-        }
-
-    }//GEN-LAST:event_btnSimpanJenisActionPerformed
-
-    private void tabTransaksiStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_tabTransaksiStateChanged
-        // TODO add your handling code here:
-
-    }//GEN-LAST:event_tabTransaksiStateChanged
-
-    private void tabTransaksiPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_tabTransaksiPropertyChange
-        // TODO add your handling code here:
-
-    }//GEN-LAST:event_tabTransaksiPropertyChange
-
-    private void tableJenisMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableJenisMouseClicked
-        // TODO add your handling code here:
-        DataRow = tableJenis.getSelectedRow();
-        tf_idjenis.setText(tableJenis.getValueAt(DataRow, 0).toString());
-        tfNamaJenis.setText(tableJenis.getValueAt(DataRow, 1).toString());
-        spinnerBeratJenis.setValue(Integer.valueOf(tableJenis.getValueAt(DataRow, 2).toString()));
-        tfHargaJenis.setText(tableJenis.getValueAt(DataRow, 3).toString());
-    }//GEN-LAST:event_tableJenisMouseClicked
-
-    private void btnSimpanDiskonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSimpanDiskonActionPerformed
-        // TODO add your handling code here:
-        String nm_diskon = tfNamaDiskon.getText().toUpperCase();
-        int id_diskon = Integer.valueOf(tf_id_diskon.getText());
-        int jml_diskon = Integer.valueOf(spinnerJumlahDiskon.getValue().toString());
-
-        String sql;
-        try {
-            sql = "{call DML_DISKON(?,?,?,?)}";
-            c = connect.prepareCall(sql);
-            c.setInt(1, id_diskon);
-            c.setString(2, nm_diskon);
-            c.setInt(3, jml_diskon);
-            c.registerOutParameter(4, Types.INTEGER);
-            c.executeUpdate();
-            if (c.getInt(4) == 0) {
-                JOptionPane.showMessageDialog(null, "Data Berhasil Disimpan");
-            } else {
-                JOptionPane.showMessageDialog(null, "Data Berhasil di update");
-            }
             tampilTableDiskon();
             tampilIdDiskon();
-        } catch (Exception e) {
+        } catch (SQLException e) {
+            System.out.println(e);
         }
-
     }//GEN-LAST:event_btnSimpanDiskonActionPerformed
 
-    private void btnHapusTableDiskonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHapusTableDiskonActionPerformed
+    private void tf_search_memberKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tf_search_memberKeyPressed
         // TODO add your handling code here:
-    }//GEN-LAST:event_btnHapusTableDiskonActionPerformed
+        DefaultTableModel model = (DefaultTableModel) tableMember.getModel();
+        TableRowSorter<DefaultTableModel> tr = new TableRowSorter<DefaultTableModel>(model);
+        tableMember.setRowSorter(tr);
+        tr.setRowFilter(RowFilter.regexFilter(tf_search_member.getText().trim().toUpperCase()));
+    }//GEN-LAST:event_tf_search_memberKeyPressed
 
-    private void tableDiskonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableDiskonMouseClicked
+    private void btnHapusFieldMemberActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHapusFieldMemberActionPerformed
         // TODO add your handling code here:
-        DataRow = tableDiskon.getSelectedRow();
-        tf_id_diskon.setText(tableDiskon.getValueAt(DataRow, 0).toString());
-        tfNamaDiskon.setText(tableDiskon.getValueAt(DataRow, 1).toString());
-        spinnerJumlahDiskon.setValue(Integer.valueOf(tableDiskon.getValueAt(DataRow, 2).toString()));
-    }//GEN-LAST:event_tableDiskonMouseClicked
+        String id_jns = tf_jns_member.getText().toUpperCase();
+        String sql;
+        int result = JOptionPane.showConfirmDialog(null, "Apa anda yakin menghapus data dengan id " + id_jns + " ini ?", null, JOptionPane.YES_NO_OPTION);
+        if (result == JOptionPane.YES_OPTION) {
+            try {
+                sql = "{call HAPUS_JENIS_MEMBER(?,?,?)}";
+                c = connect.prepareCall(sql);
+                c.setString(1, id_jns);
+                c.registerOutParameter(2, Types.INTEGER);
+                c.registerOutParameter(3, Types.INTEGER);
+                c.executeUpdate();
+                if (c.getInt(2) == 0) {
+                    JOptionPane.showMessageDialog(null, "Maaf data tidak ditemukan");
+                } else if (c.getInt(3) == 0) {
+                    JOptionPane.showMessageDialog(null, "Data berhasil dihapus");
+                } else {
+                    JOptionPane.showMessageDialog(null, "Data masih memiliki relasi dengan tabel lain");
+                }
+                tampilTableJenisMember();
+                tampilIdJenisMember();
+            } catch (Exception e) {
+            }
+        }
+    }//GEN-LAST:event_btnHapusFieldMemberActionPerformed
 
     private void btnSimpanMemberActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSimpanMemberActionPerformed
         // TODO add your handling code here:
@@ -1741,6 +1503,107 @@ public class Main extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnSimpanMemberActionPerformed
 
+    private void tableMemberMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableMemberMouseClicked
+        // TODO add your handling code here:
+        DataRow = tableMember.getSelectedRow();
+        tf_jns_member.setText(tableMember.getValueAt(DataRow, 0).toString());
+        tfNamaJenisMember.setText(tableMember.getValueAt(DataRow, 1).toString());
+    }//GEN-LAST:event_tableMemberMouseClicked
+
+    private void tf_search_jenisKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tf_search_jenisKeyPressed
+        // TODO add your handling code here:
+        DefaultTableModel model = (DefaultTableModel) tableJenis.getModel();
+        TableRowSorter<DefaultTableModel> tr = new TableRowSorter<DefaultTableModel>(model);
+        tableJenis.setRowSorter(tr);
+        tr.setRowFilter(RowFilter.regexFilter(tf_search_jenis.getText().trim().toUpperCase()));
+    }//GEN-LAST:event_tf_search_jenisKeyPressed
+
+    private void tableJenisMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableJenisMouseClicked
+        // TODO add your handling code here:
+        DataRow = tableJenis.getSelectedRow();
+        tf_idjenis.setText(tableJenis.getValueAt(DataRow, 0).toString());
+        tfNamaJenis.setText(tableJenis.getValueAt(DataRow, 1).toString());
+        spinnerBeratJenis.setValue(Integer.valueOf(tableJenis.getValueAt(DataRow, 2).toString()));
+        tfHargaJenis.setText(tableJenis.getValueAt(DataRow, 3).toString());
+    }//GEN-LAST:event_tableJenisMouseClicked
+
+    private void btnSimpanJenisActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSimpanJenisActionPerformed
+        // TODO add your handling code here:
+        String nm_jenis = tfNamaJenis.getText().toUpperCase();
+        String id_jns = tf_idjenis.getText();
+        Float brt_jenis = Float.parseFloat(spinnerBeratJenis.getValue().toString());
+        Integer hrg = Integer.parseInt(tfHargaJenis.getText().toUpperCase());
+        String sql;
+        try {
+            sql = "{call DML_JENIS(?,?,?,?,?)}";
+            c = connect.prepareCall(sql);
+            c.setString(1, id_jns);
+            c.setString(2, nm_jenis);
+            c.setFloat(3, brt_jenis);
+            c.setInt(4, hrg);
+            c.registerOutParameter(5, Types.INTEGER);
+            c.executeUpdate();
+            if (c.getInt(5) == 0) {
+                JOptionPane.showMessageDialog(null, "Data Berhasil Disimpan");
+            } else {
+                JOptionPane.showMessageDialog(null, "Data Berhasil di update");
+            }
+
+            tampilTableJenis();
+            tampilIdJenis();
+        } catch (Exception e) {
+        }
+    }//GEN-LAST:event_btnSimpanJenisActionPerformed
+
+    private void btnHapusFieldsJenisActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHapusFieldsJenisActionPerformed
+        // TODO add your handling code here:
+
+        String id_jns = tf_idjenis.getText().toUpperCase();
+        String sql;
+        int result = JOptionPane.showConfirmDialog(null, "Apa anda yakin menghapus data dengan id " + id_jns + " ini ?", null, JOptionPane.YES_NO_OPTION);
+        if (result == JOptionPane.YES_OPTION) {
+            try {
+                sql = "{call HAPUS_JENIS(?,?,?)}";
+                c = connect.prepareCall(sql);
+                c.setString(1, id_jns);
+                c.registerOutParameter(2, Types.INTEGER);
+                c.registerOutParameter(3, Types.INTEGER);
+                c.executeUpdate();
+                if (c.getInt(2) == 0) {
+                    JOptionPane.showMessageDialog(null, "Maaf data tidak ditemukan");
+                } else if (c.getInt(3) == 0) {
+                    JOptionPane.showMessageDialog(null, "Data berhasil dihapus");
+                } else {
+                    JOptionPane.showMessageDialog(null, "Data masih memiliki relasi dengan tabel lain");
+                }
+                tampilTableJenis();
+                tampilIdJenis();
+            } catch (Exception e) {
+            }
+        }
+    }//GEN-LAST:event_btnHapusFieldsJenisActionPerformed
+
+    private void tfHargaJenisKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tfHargaJenisKeyTyped
+        // TODO add your handling code here:
+        filterAngka(evt);
+    }//GEN-LAST:event_tfHargaJenisKeyTyped
+
+    private void spinnerBeratJenisKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_spinnerBeratJenisKeyTyped
+        // TODO add your handling code here:
+        filterAngka(evt);
+    }//GEN-LAST:event_spinnerBeratJenisKeyTyped
+
+    private void tfNamaJenisActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tfNamaJenisActionPerformed
+        // TODO add your handling code here:
+
+    }//GEN-LAST:event_tfNamaJenisActionPerformed
+
+    private void btnHapusTablePelangganActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHapusTablePelangganActionPerformed
+        // TODO add your handling code here:
+//        hapusTablePelanggan();
+        tampilTablePelanggan();
+    }//GEN-LAST:event_btnHapusTablePelangganActionPerformed
+
     private void btnSimpanPelangganActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSimpanPelangganActionPerformed
         // TODO add your handling code here:
         String nm_pelanggan = tfNamaPelanggan.getText().toUpperCase();
@@ -1764,20 +1627,31 @@ public class Main extends javax.swing.JFrame {
             } else {
                 JOptionPane.showMessageDialog(null, "Data Berhasil di update");
             }
-            
-            cbNamaTransaksi.removeAllItems();
-            comboBoxTransaksiNama();
-            
+
             tampilTablePelanggan();
             tampilIdPelanggan();
         } catch (Exception e) {
         }
-
     }//GEN-LAST:event_btnSimpanPelangganActionPerformed
 
-    private void tf_id_diskonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tf_id_diskonActionPerformed
+    private void btnHapusFieldsPelangganActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHapusFieldsPelangganActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_tf_id_diskonActionPerformed
+        tfNamaPelanggan.setText(null);
+        tfAlamatPelanggan.setText(null);
+        tfTeleponPelanggan.setText(null);
+    }//GEN-LAST:event_btnHapusFieldsPelangganActionPerformed
+
+    private void tfTeleponPelangganKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tfTeleponPelangganKeyTyped
+        // TODO add your handling code here:
+        filterAngka(evt);
+    }//GEN-LAST:event_tfTeleponPelangganKeyTyped
+
+    private void btnFormTransaksiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFormTransaksiActionPerformed
+        // TODO add your handling code here:
+        new Transaksi().setVisible(true);
+        this.setVisible(false);
+    }//GEN-LAST:event_btnFormTransaksiActionPerformed
+
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -1785,33 +1659,26 @@ public class Main extends javax.swing.JFrame {
     private com.toedter.calendar.JDateChooser DateChooserTanggalCetakAwalLaporanTransaksi;
     private javax.swing.JButton btnCetakLaporanMasalah;
     private javax.swing.JButton btnCetakLaporanTransaksi;
+    private javax.swing.JButton btnFormTransaksi;
     private javax.swing.JButton btnHapusFieldMember;
     private javax.swing.JButton btnHapusFieldsDiskon;
     private javax.swing.JButton btnHapusFieldsJenis;
     private javax.swing.JButton btnHapusFieldsMasalah;
     private javax.swing.JButton btnHapusFieldsPelanggan;
-    private javax.swing.JButton btnHapusFieldsTransaksi;
     private javax.swing.JButton btnHapusTableDiskon;
-    private javax.swing.JButton btnHapusTableJenis;
     private javax.swing.JButton btnHapusTableMasalah;
-    private javax.swing.JButton btnHapusTableMember;
     private javax.swing.JButton btnHapusTablePelanggan;
-    private javax.swing.JButton btnHapusTableTransaksi;
     private javax.swing.JButton btnLogout;
     private javax.swing.JButton btnSimpanDiskon;
     private javax.swing.JButton btnSimpanJenis;
     private javax.swing.JButton btnSimpanMasalah;
     private javax.swing.JButton btnSimpanMember;
     private javax.swing.JButton btnSimpanPelanggan;
-    private javax.swing.JButton btnSimpanTransaksi;
-    private javax.swing.JComboBox cbJenisTransaksi;
-    private javax.swing.JComboBox cbNamaTransaksi;
     private javax.swing.JComboBox cbStatusPelanggan;
-    private javax.swing.JComboBox cbTipeTransaksi;
+    private javax.swing.JComboBox<String> cb_diskon_member;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
-    private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel15;
@@ -1819,27 +1686,24 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel17;
     private javax.swing.JLabel jLabel18;
     private javax.swing.JLabel jLabel19;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel20;
     private javax.swing.JLabel jLabel21;
     private javax.swing.JLabel jLabel22;
     private javax.swing.JLabel jLabel23;
     private javax.swing.JLabel jLabel24;
     private javax.swing.JLabel jLabel25;
-    private javax.swing.JLabel jLabel26;
     private javax.swing.JLabel jLabel27;
     private javax.swing.JLabel jLabel28;
     private javax.swing.JLabel jLabel29;
-    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel30;
-    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel31;
+    private javax.swing.JLabel jLabel32;
+    private javax.swing.JLabel jLabel33;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
-    private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel10;
     private javax.swing.JPanel jPanel11;
     private javax.swing.JPanel jPanel12;
     private javax.swing.JPanel jPanel13;
@@ -1853,7 +1717,6 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel7;
     private javax.swing.JPanel jPanel8;
     private javax.swing.JPanel jPanel9;
-    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
@@ -1862,7 +1725,6 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane7;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JSpinner spinnerBeratJenis;
-    private javax.swing.JSpinner spinnerBeratTransaksi;
     private javax.swing.JSpinner spinnerJumlahDiskon;
     private javax.swing.JTextArea taDeskripsiMasalah;
     private javax.swing.JTabbedPane tabTransaksi;
@@ -1871,7 +1733,6 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JTable tableMasalah;
     private javax.swing.JTable tableMember;
     private javax.swing.JTable tablePelanggan;
-    private javax.swing.JTable tableTransaksi;
     private javax.swing.JTextField tfAlamatPelanggan;
     private javax.swing.JTextField tfHargaAkhirLaporanMasalah;
     private javax.swing.JTextField tfHargaAwalLaporanMasalah;
@@ -1887,5 +1748,7 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JTextField tf_id_pelanggan;
     private javax.swing.JTextField tf_idjenis;
     private javax.swing.JTextField tf_jns_member;
+    private javax.swing.JTextField tf_search_jenis;
+    private javax.swing.JTextField tf_search_member;
     // End of variables declaration//GEN-END:variables
 }
