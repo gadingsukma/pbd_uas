@@ -199,7 +199,7 @@ public class SignUp extends javax.swing.JFrame {
             }
         });
         getContentPane().add(btnSignUp);
-        btnSignUp.setBounds(190, 670, 77, 25);
+        btnSignUp.setBounds(190, 670, 73, 32);
 
         btnCancel.setText("Cancel");
         btnCancel.addActionListener(new java.awt.event.ActionListener() {
@@ -208,7 +208,7 @@ public class SignUp extends javax.swing.JFrame {
             }
         });
         getContentPane().add(btnCancel);
-        btnCancel.setBounds(340, 670, 79, 25);
+        btnCancel.setBounds(340, 670, 79, 32);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents

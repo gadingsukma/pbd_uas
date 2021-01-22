@@ -10,13 +10,11 @@ import java.awt.Color;
 import java.awt.event.KeyEvent;
 import java.sql.CallableStatement;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Types;
-import java.util.Date;
 import javax.swing.JOptionPane;
 import javax.swing.RowFilter;
 import javax.swing.table.DefaultTableModel;
@@ -41,7 +39,7 @@ public class Main extends javax.swing.JFrame {
     DefaultTableModel tblPelanggan = new DefaultTableModel(new Object[]{"ID Pelanggan", "ID Jenis Member", "Nama", "Alamat", "Telepon", "Status", "Poin"}, 0);
     DefaultTableModel tblJenis = new DefaultTableModel(new Object[]{"ID Jenis", "Nama Jenis", "Berat (kg)", "Harga"}, 0);
     DefaultTableModel tblMember = new DefaultTableModel(new Object[]{"ID Jenis Member", "Nama"}, 0);
-    DefaultTableModel tblDiskon = new DefaultTableModel(new Object[]{"ID Diskon", "Nama Diskon", "Jumlah Diskon (%)"}, 0);
+    DefaultTableModel tblDiskon = new DefaultTableModel(new Object[]{"ID Diskon", "Nama Diskon", "Jumlah Diskon (%)","Berat cucian"}, 0);
     DefaultTableModel tblMasalah = new DefaultTableModel(new Object[]{"ID Pelanggan", "ID Masalah", "Nama Barang", "Harga", "Deskripsi"}, 0);
 
     JDateChooser dateChooser = new JDateChooser();
@@ -63,8 +61,6 @@ public class Main extends javax.swing.JFrame {
         btnSimpanMasalah.setBackground(Color.WHITE);
         btnCetakLaporanMasalah.setBackground(Color.WHITE);
 //        btnHapusTableTransaksi.setBackground(Color.RED);
-        btnHapusTablePelanggan.setBackground(Color.RED);
-        btnHapusTableDiskon.setBackground(Color.RED);
         btnHapusTableMasalah.setBackground(Color.RED);
 
         Conn conn = new Conn();
@@ -104,7 +100,6 @@ public class Main extends javax.swing.JFrame {
 //            System.exit(0);
 //        }
 //    }
-
     void comboBoxStatusPelanggan() {
         try {
             String sql = "select NAMA from JENIS_MEMBER order by 1";
@@ -120,8 +115,8 @@ public class Main extends javax.swing.JFrame {
             System.exit(0);
         }
     }
-    
-     void comboBoxDiskonMember() {
+
+    void comboBoxDiskonMember() {
         try {
             String sql = "select NAMA from JENIS_MEMBER order by 1";
             s = connect.createStatement();
@@ -151,7 +146,6 @@ public class Main extends javax.swing.JFrame {
 //            System.exit(0);
 //        }
 //    }
-
 //    void comboBoxPelanggan(){
 //        try {
 //            String sql="select STATUS from PELANGGAN order by NAMA";
@@ -228,7 +222,6 @@ public class Main extends javax.swing.JFrame {
 //            System.out.println(se);
 //        }
 //    }
-
     void tampilTablePelanggan() {
         try {
             String sql = "select * from PELANGGAN order by NAMA";
@@ -252,6 +245,11 @@ public class Main extends javax.swing.JFrame {
             }
             p.close();
             tablePelanggan.setModel(tblPelanggan);
+            
+            tfNamaPelanggan.setText(null);
+            tfAlamatPelanggan.setText(null);
+            tfTeleponPelanggan.setText(null);
+            tampilIdPelanggan();
         } catch (SQLException se) {
             System.out.println(se);
         }
@@ -313,14 +311,14 @@ public class Main extends javax.swing.JFrame {
 
             tblDiskon.setRowCount(0);
 
-            String idDiskon, namaDiskon, jumlahDiskon;
+            String idDiskon, namaDiskon, jumlahDiskon,brt;
 
             while (rs.next()) {
                 idDiskon = rs.getString("ID_DISKON");
                 namaDiskon = rs.getString("NAMA_DISKON");
                 jumlahDiskon = rs.getString("JUMLAH_DISKON");
-
-                tblDiskon.addRow(new Object[]{idDiskon, namaDiskon, jumlahDiskon});
+                brt = rs.getString("BERAT");
+                tblDiskon.addRow(new Object[]{idDiskon, namaDiskon, jumlahDiskon,brt});
             }
             tableDiskon.setModel(tblDiskon);
             tfNamaDiskon.setText(null);
@@ -368,7 +366,6 @@ public class Main extends javax.swing.JFrame {
 //            System.out.println(se);;
 //        }
 //    }
-
 //    void hapusTablePelanggan() {
 //        int selected = tablePelanggan.getSelectedRow();
 //        String row = tablePelanggan.getModel().getValueAt(selected, 0).toString();
@@ -382,7 +379,6 @@ public class Main extends javax.swing.JFrame {
 //            System.out.println(se);;
 //        }
 //    }
-
 //    void hapusTableJenis() {
 //        int selected = tableJenis.getSelectedRow();
 //        String row = tableJenis.getModel().getValueAt(selected, 0).toString();
@@ -396,7 +392,6 @@ public class Main extends javax.swing.JFrame {
 //            System.out.println(se);;
 //        }
 //    }
-
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -420,10 +415,11 @@ public class Main extends javax.swing.JFrame {
         btnSimpanPelanggan = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
         tablePelanggan = new javax.swing.JTable();
-        btnHapusTablePelanggan = new javax.swing.JButton();
         jPanel11 = new javax.swing.JPanel();
         tf_id_pelanggan = new javax.swing.JTextField();
         jLabel30 = new javax.swing.JLabel();
+        tf_search_user = new javax.swing.JTextField();
+        jLabel2 = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
         jLabel9 = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
@@ -439,7 +435,7 @@ public class Main extends javax.swing.JFrame {
         jPanel12 = new javax.swing.JPanel();
         tf_idjenis = new javax.swing.JTextField();
         jLabel27 = new javax.swing.JLabel();
-        tf_search_jenis = new javax.swing.JTextField();
+        tf_search_jenis1 = new javax.swing.JTextField();
         jLabel31 = new javax.swing.JLabel();
         jPanel8 = new javax.swing.JPanel();
         jLabel5 = new javax.swing.JLabel();
@@ -451,7 +447,7 @@ public class Main extends javax.swing.JFrame {
         jPanel13 = new javax.swing.JPanel();
         jLabel29 = new javax.swing.JLabel();
         tf_jns_member = new javax.swing.JTextField();
-        tf_search_member = new javax.swing.JTextField();
+        tf_search_member1 = new javax.swing.JTextField();
         jLabel32 = new javax.swing.JLabel();
         jPanel5 = new javax.swing.JPanel();
         jLabel15 = new javax.swing.JLabel();
@@ -463,12 +459,14 @@ public class Main extends javax.swing.JFrame {
         jLabel17 = new javax.swing.JLabel();
         jScrollPane5 = new javax.swing.JScrollPane();
         tableDiskon = new javax.swing.JTable();
-        btnHapusTableDiskon = new javax.swing.JButton();
         jPanel14 = new javax.swing.JPanel();
         jLabel28 = new javax.swing.JLabel();
         tf_id_diskon = new javax.swing.JTextField();
         jLabel33 = new javax.swing.JLabel();
         cb_diskon_member = new javax.swing.JComboBox<String>();
+        jLabel26 = new javax.swing.JLabel();
+        jLabel34 = new javax.swing.JLabel();
+        spinnerberatDiskon = new javax.swing.JSpinner();
         jPanel9 = new javax.swing.JPanel();
         jLabel18 = new javax.swing.JLabel();
         jLabel19 = new javax.swing.JLabel();
@@ -529,6 +527,12 @@ public class Main extends javax.swing.JFrame {
             }
         });
 
+        cbStatusPelanggan.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                cbStatusPelangganItemStateChanged(evt);
+            }
+        });
+
         btnHapusFieldsPelanggan.setText("Hapus");
         btnHapusFieldsPelanggan.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -554,14 +558,12 @@ public class Main extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        jScrollPane2.setViewportView(tablePelanggan);
-
-        btnHapusTablePelanggan.setText("Hapus");
-        btnHapusTablePelanggan.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnHapusTablePelangganActionPerformed(evt);
+        tablePelanggan.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tablePelangganMouseClicked(evt);
             }
         });
+        jScrollPane2.setViewportView(tablePelanggan);
 
         jPanel11.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -580,6 +582,14 @@ public class Main extends javax.swing.JFrame {
         tf_id_pelanggan.setBackground(new java.awt.Color(204, 204, 204));
 
         jLabel30.setText("ID Pelanggan");
+
+        tf_search_user.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                tf_search_userKeyPressed(evt);
+            }
+        });
+
+        jLabel2.setText("Cari Data");
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -612,45 +622,52 @@ public class Main extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)))
                 .addComponent(jPanel11, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 670, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnHapusTablePelanggan, javax.swing.GroupLayout.Alignment.TRAILING))
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 670, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(jLabel2)
+                        .addGap(18, 18, 18)
+                        .addComponent(tf_search_user, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 351, Short.MAX_VALUE)
-                .addGap(18, 18, 18)
-                .addComponent(btnHapusTablePelanggan)
-                .addContainerGap())
             .addComponent(jPanel11, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(tf_id_pelanggan, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel30))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(tfNamaPelanggan, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel1))
-                .addGap(31, 31, 31)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel6)
-                    .addComponent(tfAlamatPelanggan, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(32, 32, 32)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel7)
-                    .addComponent(tfTeleponPelanggan, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(37, 37, 37)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel8)
-                    .addComponent(cbStatusPelanggan, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(37, 37, 37)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnHapusFieldsPelanggan)
-                    .addComponent(btnSimpanPelanggan))
-                .addContainerGap(100, Short.MAX_VALUE))
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(tf_id_pelanggan, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel30))
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(tfNamaPelanggan, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel1))
+                        .addGap(31, 31, 31)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel6)
+                            .addComponent(tfAlamatPelanggan, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(32, 32, 32)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel7)
+                            .addComponent(tfTeleponPelanggan, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(37, 37, 37)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel8)
+                            .addComponent(cbStatusPelanggan, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(37, 37, 37)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(btnHapusFieldsPelanggan)
+                            .addComponent(btnSimpanPelanggan)))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(15, 15, 15)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(tf_search_user, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel2))
+                        .addGap(18, 18, 18)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 336, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         tabTransaksi.addTab("Pelanggan", jPanel2);
@@ -731,9 +748,9 @@ public class Main extends javax.swing.JFrame {
 
         jLabel27.setText("ID JENIS");
 
-        tf_search_jenis.addKeyListener(new java.awt.event.KeyAdapter() {
+        tf_search_jenis1.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
-                tf_search_jenisKeyPressed(evt);
+                tf_search_jenis1KeyPressed(evt);
             }
         });
 
@@ -773,7 +790,7 @@ public class Main extends javax.swing.JFrame {
                         .addGap(407, 407, 407)
                         .addComponent(jLabel31)
                         .addGap(27, 27, 27)
-                        .addComponent(tf_search_jenis, javax.swing.GroupLayout.PREFERRED_SIZE, 177, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(tf_search_jenis1, javax.swing.GroupLayout.PREFERRED_SIZE, 177, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         jPanel3Layout.setVerticalGroup(
@@ -805,7 +822,7 @@ public class Main extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
                 .addContainerGap(19, Short.MAX_VALUE)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(tf_search_jenis, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(tf_search_jenis1, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel31, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 310, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -866,9 +883,9 @@ public class Main extends javax.swing.JFrame {
         tf_jns_member.setEditable(false);
         tf_jns_member.setBackground(new java.awt.Color(204, 204, 204));
 
-        tf_search_member.addKeyListener(new java.awt.event.KeyAdapter() {
+        tf_search_member1.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
-                tf_search_memberKeyPressed(evt);
+                tf_search_member1KeyPressed(evt);
             }
         });
 
@@ -902,7 +919,7 @@ public class Main extends javax.swing.JFrame {
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel8Layout.createSequentialGroup()
                         .addComponent(jLabel32)
                         .addGap(26, 26, 26)
-                        .addComponent(tf_search_member, javax.swing.GroupLayout.PREFERRED_SIZE, 177, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(tf_search_member1, javax.swing.GroupLayout.PREFERRED_SIZE, 177, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         jPanel8Layout.setVerticalGroup(
@@ -926,7 +943,7 @@ public class Main extends javax.swing.JFrame {
                     .addGroup(jPanel8Layout.createSequentialGroup()
                         .addGap(13, 13, 13)
                         .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(tf_search_member, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(tf_search_member1, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel32))
                         .addGap(18, 18, 18)
                         .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 324, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -973,13 +990,6 @@ public class Main extends javax.swing.JFrame {
         });
         jScrollPane5.setViewportView(tableDiskon);
 
-        btnHapusTableDiskon.setText("Hapus");
-        btnHapusTableDiskon.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnHapusTableDiskonActionPerformed(evt);
-            }
-        });
-
         jPanel14.setBackground(new java.awt.Color(255, 255, 255));
 
         javax.swing.GroupLayout jPanel14Layout = new javax.swing.GroupLayout(jPanel14);
@@ -1005,6 +1015,10 @@ public class Main extends javax.swing.JFrame {
 
         jLabel33.setText("Jenis Member");
 
+        jLabel26.setText("Berat Cucian");
+
+        jLabel34.setText("Kg");
+
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
         jPanel5Layout.setHorizontalGroup(
@@ -1012,17 +1026,13 @@ public class Main extends javax.swing.JFrame {
             .addGroup(jPanel5Layout.createSequentialGroup()
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel5Layout.createSequentialGroup()
-                        .addGap(96, 96, 96)
-                        .addComponent(btnHapusFieldsDiskon)
-                        .addGap(75, 75, 75)
-                        .addComponent(btnSimpanDiskon))
-                    .addGroup(jPanel5Layout.createSequentialGroup()
                         .addContainerGap()
                         .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                             .addComponent(jLabel33, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jLabel15, javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel16, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel28, javax.swing.GroupLayout.Alignment.LEADING))
+                            .addComponent(jLabel28, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel26, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGap(34, 34, 34)
                         .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel5Layout.createSequentialGroup()
@@ -1031,22 +1041,28 @@ public class Main extends javax.swing.JFrame {
                                 .addComponent(jLabel17))
                             .addComponent(tfNamaDiskon, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(tf_id_diskon, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(cb_diskon_member, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 67, Short.MAX_VALUE)
+                            .addComponent(cb_diskon_member, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(jPanel5Layout.createSequentialGroup()
+                                .addComponent(spinnerberatDiskon, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jLabel34)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 67, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnHapusFieldsDiskon)
+                        .addGap(75, 75, 75)
+                        .addComponent(btnSimpanDiskon)
+                        .addGap(56, 56, 56)))
                 .addComponent(jPanel14, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane5, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 670, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnHapusTableDiskon, javax.swing.GroupLayout.Alignment.TRAILING))
+                .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 670, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel5Layout.createSequentialGroup()
-                .addComponent(jScrollPane5, javax.swing.GroupLayout.DEFAULT_SIZE, 351, Short.MAX_VALUE)
-                .addGap(18, 18, 18)
-                .addComponent(btnHapusTableDiskon)
-                .addContainerGap())
+                .addComponent(jScrollPane5, javax.swing.GroupLayout.DEFAULT_SIZE, 347, Short.MAX_VALUE)
+                .addGap(56, 56, 56))
             .addComponent(jPanel14, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(jPanel5Layout.createSequentialGroup()
                 .addGap(12, 12, 12)
@@ -1066,7 +1082,12 @@ public class Main extends javax.swing.JFrame {
                     .addComponent(jLabel16)
                     .addComponent(spinnerJumlahDiskon, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel17))
-                .addGap(41, 41, 41)
+                .addGap(27, 27, 27)
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(spinnerberatDiskon, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel34)
+                    .addComponent(jLabel26))
+                .addGap(57, 57, 57)
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnSimpanDiskon)
                     .addComponent(btnHapusFieldsDiskon))
@@ -1190,7 +1211,11 @@ public class Main extends javax.swing.JFrame {
 
         jLabel13.setText("Tentukan tanggal");
 
+        DateChooserTanggalCetakAwalLaporanTransaksi.setDateFormatString("dd/MM/yyyy");
+
         jLabel14.setText("Sampai");
+
+        DateChooserTanggalCetakAkhirLaporanTransaksi.setDateFormatString("dd/MM/yyyy");
 
         btnCetakLaporanTransaksi.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/exportResize.png"))); // NOI18N
         btnCetakLaporanTransaksi.setText("Cetak");
@@ -1326,15 +1351,11 @@ public class Main extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(tabTransaksi, javax.swing.GroupLayout.PREFERRED_SIZE, 1080, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnLogout)
-                        .addGap(0, 14, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btnFormTransaksi)
-                        .addContainerGap())))
+                    .addComponent(btnLogout)
+                    .addComponent(btnFormTransaksi))
+                .addGap(0, 14, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1346,7 +1367,7 @@ public class Main extends javax.swing.JFrame {
                 .addComponent(btnLogout)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(btnFormTransaksi, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(59, 59, 59))
+                .addGap(67, 67, 67))
         );
 
         pack();
@@ -1381,16 +1402,13 @@ public class Main extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_tf_id_diskonActionPerformed
 
-    private void btnHapusTableDiskonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHapusTableDiskonActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnHapusTableDiskonActionPerformed
-
     private void tableDiskonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableDiskonMouseClicked
         // TODO add your handling code here:
         DataRow = tableDiskon.getSelectedRow();
         tf_id_diskon.setText(tableDiskon.getValueAt(DataRow, 0).toString());
         tfNamaDiskon.setText(tableDiskon.getValueAt(DataRow, 1).toString());
         spinnerJumlahDiskon.setValue(Integer.valueOf(tableDiskon.getValueAt(DataRow, 2).toString()));
+        spinnerberatDiskon.setValue(Integer.valueOf(tableDiskon.getValueAt(DataRow, 3).toString()));
     }//GEN-LAST:event_tableDiskonMouseClicked
 
     private void btnHapusFieldsDiskonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHapusFieldsDiskonActionPerformed
@@ -1404,11 +1422,14 @@ public class Main extends javax.swing.JFrame {
                 c = connect.prepareCall(sql);
                 c.setString(1, id_diskon);
                 c.registerOutParameter(2, Types.INTEGER);
+                c.registerOutParameter(3, Types.INTEGER);
                 c.executeUpdate();
                 if (c.getInt(2) == 0) {
                     JOptionPane.showMessageDialog(null, "Maaf data tidak ditemukan");
-                } else {
+                } else if (c.getInt(3) == 0) {
                     JOptionPane.showMessageDialog(null, "Data berhasil dihapus");
+                } else {
+                    JOptionPane.showMessageDialog(null, "Data masih memiliki relasi dengan tabel lain");
                 }
                 tampilTableDiskon();
                 tampilIdDiskon();
@@ -1423,17 +1444,19 @@ public class Main extends javax.swing.JFrame {
         String member = cb_diskon_member.getSelectedItem().toString();
         int id_diskon = Integer.valueOf(tf_id_diskon.getText());
         int jml_diskon = Integer.valueOf(spinnerJumlahDiskon.getValue().toString());
+        int brt = Integer.valueOf(spinnerberatDiskon.getValue().toString());
         String sql;
         try {
-            sql = "{call DML_DISKON(?,?,?,?,?)}";
+            sql = "{call DML_DISKON(?,?,?,?,?,?)}";
             c = connect.prepareCall(sql);
             c.setInt(1, id_diskon);
             c.setString(2, member);
             c.setString(3, nm_diskon);
             c.setInt(4, jml_diskon);
-            c.registerOutParameter(5, Types.INTEGER);
+            c.setInt(5, brt);
+            c.registerOutParameter(6, Types.INTEGER);
             c.executeUpdate();
-            if (c.getInt(5) == 0) {
+            if (c.getInt(6) == 0) {
                 JOptionPane.showMessageDialog(null, "Data Berhasil Disimpan");
             } else {
                 JOptionPane.showMessageDialog(null, "Data Berhasil di update");
@@ -1445,13 +1468,13 @@ public class Main extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnSimpanDiskonActionPerformed
 
-    private void tf_search_memberKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tf_search_memberKeyPressed
+    private void tf_search_memberKeyPressed(java.awt.event.KeyEvent evt) {                                            
         // TODO add your handling code here:
         DefaultTableModel model = (DefaultTableModel) tableMember.getModel();
         TableRowSorter<DefaultTableModel> tr = new TableRowSorter<DefaultTableModel>(model);
         tableMember.setRowSorter(tr);
-        tr.setRowFilter(RowFilter.regexFilter(tf_search_member.getText().trim().toUpperCase()));
-    }//GEN-LAST:event_tf_search_memberKeyPressed
+        tr.setRowFilter(RowFilter.regexFilter(tf_search_member1.getText().trim().toUpperCase()));
+    }                                           
 
     private void btnHapusFieldMemberActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHapusFieldMemberActionPerformed
         // TODO add your handling code here:
@@ -1510,13 +1533,13 @@ public class Main extends javax.swing.JFrame {
         tfNamaJenisMember.setText(tableMember.getValueAt(DataRow, 1).toString());
     }//GEN-LAST:event_tableMemberMouseClicked
 
-    private void tf_search_jenisKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tf_search_jenisKeyPressed
+    private void tf_search_jenisKeyPressed(java.awt.event.KeyEvent evt) {                                           
         // TODO add your handling code here:
         DefaultTableModel model = (DefaultTableModel) tableJenis.getModel();
         TableRowSorter<DefaultTableModel> tr = new TableRowSorter<DefaultTableModel>(model);
         tableJenis.setRowSorter(tr);
-        tr.setRowFilter(RowFilter.regexFilter(tf_search_jenis.getText().trim().toUpperCase()));
-    }//GEN-LAST:event_tf_search_jenisKeyPressed
+        tr.setRowFilter(RowFilter.regexFilter(tf_search_jenis1.getText().trim().toUpperCase()));
+    }                                          
 
     private void tableJenisMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableJenisMouseClicked
         // TODO add your handling code here:
@@ -1598,12 +1621,6 @@ public class Main extends javax.swing.JFrame {
 
     }//GEN-LAST:event_tfNamaJenisActionPerformed
 
-    private void btnHapusTablePelangganActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHapusTablePelangganActionPerformed
-        // TODO add your handling code here:
-//        hapusTablePelanggan();
-        tampilTablePelanggan();
-    }//GEN-LAST:event_btnHapusTablePelangganActionPerformed
-
     private void btnSimpanPelangganActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSimpanPelangganActionPerformed
         // TODO add your handling code here:
         String nm_pelanggan = tfNamaPelanggan.getText().toUpperCase();
@@ -1635,10 +1652,26 @@ public class Main extends javax.swing.JFrame {
     }//GEN-LAST:event_btnSimpanPelangganActionPerformed
 
     private void btnHapusFieldsPelangganActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHapusFieldsPelangganActionPerformed
-        // TODO add your handling code here:
-        tfNamaPelanggan.setText(null);
-        tfAlamatPelanggan.setText(null);
-        tfTeleponPelanggan.setText(null);
+        String id_pel = tf_id_pelanggan.getText().toUpperCase();
+        String sql;
+        int result = JOptionPane.showConfirmDialog(null, "Apa anda yakin menghapus data dengan id " + id_pel + " ini ?", null, JOptionPane.YES_NO_OPTION);
+        if (result == JOptionPane.YES_OPTION) {
+            try {
+                sql = "{call HAPUS_PELANGGAN(?,?)}";
+                c = connect.prepareCall(sql);
+                c.setString(1, id_pel);
+                c.registerOutParameter(2, Types.INTEGER);
+                c.executeUpdate();
+                if (c.getInt(2) == 1) {
+                    JOptionPane.showMessageDialog(null, "Data berhasil dihapus");
+                } else {
+                    JOptionPane.showMessageDialog(null, "Data tidak ditemukan");
+                }
+                tampilTablePelanggan();
+          
+            } catch (Exception e) {
+            }
+        }
     }//GEN-LAST:event_btnHapusFieldsPelangganActionPerformed
 
     private void tfTeleponPelangganKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tfTeleponPelangganKeyTyped
@@ -1652,6 +1685,46 @@ public class Main extends javax.swing.JFrame {
         this.setVisible(false);
     }//GEN-LAST:event_btnFormTransaksiActionPerformed
 
+    private void tf_search_userKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tf_search_userKeyPressed
+        // TODO add your handling code here:
+        DefaultTableModel model = (DefaultTableModel) tablePelanggan.getModel();
+        TableRowSorter<DefaultTableModel> tr = new TableRowSorter<DefaultTableModel>(model);
+        tablePelanggan.setRowSorter(tr);
+        tr.setRowFilter(RowFilter.regexFilter(tf_search_user.getText().trim().toUpperCase()));
+    }//GEN-LAST:event_tf_search_userKeyPressed
+
+    private void tablePelangganMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablePelangganMouseClicked
+        // TODO add your handling code here:
+        DataRow = tablePelanggan.getSelectedRow();
+        tf_id_pelanggan.setText(tablePelanggan.getValueAt(DataRow, 0).toString());
+        tfNamaPelanggan.setText(tablePelanggan.getValueAt(DataRow, 2).toString());
+        tfAlamatPelanggan.setText(tablePelanggan.getValueAt(DataRow, 3).toString());
+        tfTeleponPelanggan.setText(tablePelanggan.getValueAt(DataRow, 4).toString());
+        cbStatusPelanggan.setSelectedItem(tablePelanggan.getValueAt(DataRow, 5).toString());
+        
+        
+//        tfHargaJenis.setText(tableJenis.getValueAt(DataRow, 3).toString());
+    }//GEN-LAST:event_tablePelangganMouseClicked
+
+    private void cbStatusPelangganItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cbStatusPelangganItemStateChanged
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cbStatusPelangganItemStateChanged
+
+    private void tf_search_jenis1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tf_search_jenis1KeyPressed
+        // TODO add your handling code here:
+        DefaultTableModel model = (DefaultTableModel) tableJenis.getModel();
+        TableRowSorter<DefaultTableModel> tr = new TableRowSorter<DefaultTableModel>(model);
+        tableJenis.setRowSorter(tr);
+        tr.setRowFilter(RowFilter.regexFilter(tf_search_jenis1.getText().trim().toUpperCase()));
+    }//GEN-LAST:event_tf_search_jenis1KeyPressed
+
+    private void tf_search_member1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tf_search_member1KeyPressed
+        // TODO add your handling code here:
+        DefaultTableModel model = (DefaultTableModel) tableMember.getModel();
+        TableRowSorter<DefaultTableModel> tr = new TableRowSorter<DefaultTableModel>(model);
+        tableMember.setRowSorter(tr);
+        tr.setRowFilter(RowFilter.regexFilter(tf_search_member1.getText().trim().toUpperCase()));
+    }//GEN-LAST:event_tf_search_member1KeyPressed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -1665,9 +1738,7 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JButton btnHapusFieldsJenis;
     private javax.swing.JButton btnHapusFieldsMasalah;
     private javax.swing.JButton btnHapusFieldsPelanggan;
-    private javax.swing.JButton btnHapusTableDiskon;
     private javax.swing.JButton btnHapusTableMasalah;
-    private javax.swing.JButton btnHapusTablePelanggan;
     private javax.swing.JButton btnLogout;
     private javax.swing.JButton btnSimpanDiskon;
     private javax.swing.JButton btnSimpanJenis;
@@ -1686,12 +1757,14 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel17;
     private javax.swing.JLabel jLabel18;
     private javax.swing.JLabel jLabel19;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel20;
     private javax.swing.JLabel jLabel21;
     private javax.swing.JLabel jLabel22;
     private javax.swing.JLabel jLabel23;
     private javax.swing.JLabel jLabel24;
     private javax.swing.JLabel jLabel25;
+    private javax.swing.JLabel jLabel26;
     private javax.swing.JLabel jLabel27;
     private javax.swing.JLabel jLabel28;
     private javax.swing.JLabel jLabel29;
@@ -1699,6 +1772,7 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel31;
     private javax.swing.JLabel jLabel32;
     private javax.swing.JLabel jLabel33;
+    private javax.swing.JLabel jLabel34;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
@@ -1726,6 +1800,7 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JSpinner spinnerBeratJenis;
     private javax.swing.JSpinner spinnerJumlahDiskon;
+    private javax.swing.JSpinner spinnerberatDiskon;
     private javax.swing.JTextArea taDeskripsiMasalah;
     private javax.swing.JTabbedPane tabTransaksi;
     private javax.swing.JTable tableDiskon;
@@ -1748,7 +1823,8 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JTextField tf_id_pelanggan;
     private javax.swing.JTextField tf_idjenis;
     private javax.swing.JTextField tf_jns_member;
-    private javax.swing.JTextField tf_search_jenis;
-    private javax.swing.JTextField tf_search_member;
+    private javax.swing.JTextField tf_search_jenis1;
+    private javax.swing.JTextField tf_search_member1;
+    private javax.swing.JTextField tf_search_user;
     // End of variables declaration//GEN-END:variables
 }
