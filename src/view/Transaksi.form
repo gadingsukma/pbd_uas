@@ -81,7 +81,7 @@
                                               <EmptySpace max="-2" attributes="0"/>
                                               <Component id="jLabel26" min="-2" max="-2" attributes="0"/>
                                           </Group>
-                                          <Component id="cbJenisTransaksi" min="-2" pref="264" max="-2" attributes="0"/>
+                                          <Component id="cbJenisCuciTransaksi" min="-2" pref="264" max="-2" attributes="0"/>
                                       </Group>
                                       <Group type="103" alignment="1" groupAlignment="0" attributes="0">
                                           <Component id="cbTipeTransaksi" min="-2" pref="98" max="-2" attributes="0"/>
@@ -96,11 +96,6 @@
                                               <EmptySpace max="-2" attributes="0"/>
                                               <Component id="dcTanggalTransaksiKeluar" min="-2" pref="152" max="-2" attributes="0"/>
                                           </Group>
-                                          <Group type="102" alignment="0" attributes="0">
-                                              <Component id="btnHapusFieldsTransaksi" min="-2" max="-2" attributes="0"/>
-                                              <EmptySpace min="-2" pref="97" max="-2" attributes="0"/>
-                                              <Component id="btnSimpanTransaksi" min="-2" max="-2" attributes="0"/>
-                                          </Group>
                                       </Group>
                                   </Group>
                               </Group>
@@ -114,6 +109,10 @@
                       <Group type="102" alignment="0" attributes="0">
                           <EmptySpace max="-2" attributes="0"/>
                           <Component id="labeltgltransaksi" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <Group type="102" alignment="0" attributes="0">
+                          <EmptySpace min="-2" pref="119" max="-2" attributes="0"/>
+                          <Component id="btnSimpanTransaksi" min="-2" pref="187" max="-2" attributes="0"/>
                       </Group>
                   </Group>
                   <EmptySpace pref="71" max="32767" attributes="0"/>
@@ -166,7 +165,7 @@
                   <EmptySpace type="separate" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="jLabel3" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="cbJenisTransaksi" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="cbJenisCuciTransaksi" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace min="-2" pref="25" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
@@ -195,12 +194,9 @@
                       <Component id="dcTanggalTransaksiKeluar" max="32767" attributes="0"/>
                       <Component id="jLabel13" max="32767" attributes="0"/>
                   </Group>
-                  <EmptySpace min="-2" pref="62" max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="btnHapusFieldsTransaksi" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="btnSimpanTransaksi" alignment="3" min="-2" max="-2" attributes="0"/>
-                  </Group>
-                  <EmptySpace min="-2" pref="67" max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="58" max="-2" attributes="0"/>
+                  <Component id="btnSimpanTransaksi" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="71" max="-2" attributes="0"/>
               </Group>
               <Group type="102" alignment="0" attributes="0">
                   <Group type="103" groupAlignment="0" attributes="0">
@@ -247,14 +243,14 @@
             <Property name="text" type="java.lang.String" value="Berat"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JComboBox" name="cbJenisTransaksi">
+        <Component class="javax.swing.JComboBox" name="cbJenisCuciTransaksi">
           <Properties>
             <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
               <StringArray count="0"/>
             </Property>
           </Properties>
           <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cbJenisTransaksiActionPerformed"/>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cbJenisCuciTransaksiActionPerformed"/>
           </Events>
         </Component>
         <Component class="javax.swing.JSpinner" name="spinnerBeratTransaksi">
@@ -265,18 +261,10 @@
         </Component>
         <Component class="javax.swing.JButton" name="btnSimpanTransaksi">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Simpan"/>
+            <Property name="text" type="java.lang.String" value="Buat Transaksi"/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnSimpanTransaksiActionPerformed"/>
-          </Events>
-        </Component>
-        <Component class="javax.swing.JButton" name="btnHapusFieldsTransaksi">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="Hapus"/>
-          </Properties>
-          <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnHapusFieldsTransaksiActionPerformed"/>
           </Events>
         </Component>
         <Container class="javax.swing.JScrollPane" name="jScrollPane1">
