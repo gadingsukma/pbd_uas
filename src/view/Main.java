@@ -1828,3 +1828,4 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JTextField tf_search_user;
     // End of variables declaration//GEN-END:variables
 }
+
