@@ -1365,9 +1365,9 @@ public class Main extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(25, 25, 25)
                 .addComponent(btnLogout)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(35, 35, 35)
                 .addComponent(btnFormTransaksi, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(67, 67, 67))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
@@ -1520,10 +1520,6 @@ public class Main extends javax.swing.JFrame {
             } else {
                 JOptionPane.showMessageDialog(null, "Data Berhasil di update");
             }
-            
-            cb_diskon_member.removeAllItems();
-            comboBoxDiskonMember();
-            
             tampilTableJenisMember();
             tampilIdJenisMember();
         } catch (Exception e) {
@@ -1832,3 +1828,4 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JTextField tf_search_user;
     // End of variables declaration//GEN-END:variables
 }
+

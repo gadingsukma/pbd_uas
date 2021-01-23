@@ -54,7 +54,6 @@ public class Transaksi extends javax.swing.JFrame {
         conn.setConnections();
         connect = conn.getconnections();
 
-//        comboBoxTransaksiDiskon();
         comboBoxTransaksi();
 //        comboBoxTransaksiNama();
         tampilTableTransaksi();
@@ -69,22 +68,6 @@ public class Transaksi extends javax.swing.JFrame {
             rs = s.executeQuery(sql);
             while (rs.next()) {
                 cbJenisCuciTransaksi.addItem(rs.getString("NAMA_JENIS"));
-            }
-            s.close();
-
-        } catch (SQLException se) {
-            System.out.println("Koneksi database gagal " + se);
-            System.exit(0);
-        }
-    }
-    
-    void comboBoxTransaksiDiskon() {
-        try {
-            String sql = "select NAMA_DISKON from DISKON order by 1";
-            s = connect.createStatement();
-            rs = s.executeQuery(sql);
-            while (rs.next()) {
-                cb_diskon.addItem(rs.getString("NAMA_DISKON"));
             }
             s.close();
 
@@ -147,7 +130,7 @@ public class Transaksi extends javax.swing.JFrame {
         String rnd = "TR" + String.valueOf((new Date()).getTime());
         tf_idtrans.setText(rnd);
     }
-    
+
     void tampilTableTransaksi() {
         try {
             String sql = "select * from TRANSAKSI order by ID_TRANSAKSI";
@@ -348,7 +331,11 @@ public class Transaksi extends javax.swing.JFrame {
         tf_jns_member.setEditable(false);
         tf_jns_member.setBackground(new java.awt.Color(204, 204, 204));
 
+        dcTanggalTransaksiKeluar.setDateFormatString("dd/MM/yyyy");
+
         labeltgltransaksi.setText("Tanggal");
+
+        dcTanggalTransaksiMasuk.setDateFormatString("dd/MM/yyyy");
 
         jLabel11.setText("Masuk");
 
@@ -395,19 +382,20 @@ public class Transaksi extends javax.swing.JFrame {
                                             .addComponent(jLabel11)
                                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                             .addComponent(dcTanggalTransaksiMasuk, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                            .addComponent(btnSimpanTransaksi, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                                .addComponent(jLabel13)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                .addComponent(dcTanggalTransaksiKeluar, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE))))))
+                                        .addGroup(jPanel1Layout.createSequentialGroup()
+                                            .addComponent(jLabel13)
+                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                            .addComponent(dcTanggalTransaksiKeluar, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(jLabel10)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(tf_jns_member))))
+                                .addComponent(tf_jns_member, javax.swing.GroupLayout.PREFERRED_SIZE, 263, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(labeltgltransaksi)))
+                        .addComponent(labeltgltransaksi))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(119, 119, 119)
+                        .addComponent(btnSimpanTransaksi, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 71, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 658, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -425,8 +413,8 @@ public class Transaksi extends javax.swing.JFrame {
                             .addComponent(jLabel5)
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                             .addComponent(tf_cari_user, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addGap(24, 24, 24)
-                .addComponent(btnMenuTransaksi, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(btnMenuTransaksi, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -472,28 +460,25 @@ public class Transaksi extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(dcTanggalTransaksiKeluar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jLabel13, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(46, 46, 46)
-                .addComponent(btnSimpanTransaksi, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(75, 75, 75))
+                .addGap(58, 58, 58)
+                .addComponent(btnSimpanTransaksi)
+                .addGap(71, 71, 71))
             .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1)
+                    .addComponent(tf_search_trans, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel8))
+                .addGap(12, 12, 12)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(btnMenuTransaksi, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel1)
-                            .addComponent(tf_search_trans, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel8))
-                        .addGap(12, 12, 12)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 288, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(tf_cari_user, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel5)
-                            .addComponent(jLabel6))
-                        .addGap(18, 18, 18)
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 259, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 288, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnMenuTransaksi, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(tf_cari_user, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel5)
+                    .addComponent(jLabel6))
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 259, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 53, Short.MAX_VALUE))
         );
 
@@ -511,7 +496,7 @@ public class Transaksi extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(22, Short.MAX_VALUE))
+                .addContainerGap(45, Short.MAX_VALUE))
         );
 
         pack();
@@ -524,27 +509,30 @@ public class Transaksi extends javax.swing.JFrame {
     private void spinnerBeratTransaksiKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_spinnerBeratTransaksiKeyTyped
         // TODO add your handling code here:
         filterAngka(evt);
+
     }//GEN-LAST:event_spinnerBeratTransaksiKeyTyped
 
     private void btnSimpanTransaksiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSimpanTransaksiActionPerformed
         // TODO add your handling code here:
-        if(cbJenisCuciTransaksi.getSelectedItem().equals("")&&spinnerBeratTransaksi.getValue().equals("0")&&spinnerBeratTransaksi.getValue().equals("")&&cb_diskon.getSelectedItem().equals("")&&cbTipeTransaksi.getSelectedItem().equals("")&&dcTanggalTransaksiMasuk.getDate().equals("")&&dcTanggalTransaksiKeluar.getDate().equals("")){
+        String id_tran, jns_member, jns_cuci, diskon, tp, tgl_msk, tgl_klr;
+        int id_pel, brt, ttl;
+        
+        if(cbJenisCuciTransaksi.getSelectedItem().toString().equalsIgnoreCase("")&&spinnerBeratTransaksi.getValue().toString().equalsIgnoreCase("0")&&spinnerBeratTransaksi.getValue().toString().equalsIgnoreCase("")&&cb_diskon.getSelectedItem().toString().equalsIgnoreCase("")&&cbTipeTransaksi.getSelectedItem().toString().equalsIgnoreCase("")&&dcTanggalTransaksiMasuk.getDate().toString().equalsIgnoreCase("")&&dcTanggalTransaksiKeluar.getDate().toString().equalsIgnoreCase("")){
             JOptionPane.showMessageDialog(null, "Fields tidak boleh kosong", "Peringatan", JOptionPane.WARNING_MESSAGE);
-        }else if(cbJenisCuciTransaksi.getSelectedItem().equals("")){
+        }else if(cbJenisCuciTransaksi.getSelectedItem().toString().equalsIgnoreCase("")){
             JOptionPane.showMessageDialog(null, "Jenis cuci tidak boleh kosong", "Peringatan", JOptionPane.WARNING_MESSAGE);
-        }else if(spinnerBeratTransaksi.getValue().equals("")||spinnerBeratTransaksi.getValue().equals("0")){
+        }else if(spinnerBeratTransaksi.getValue().toString().equalsIgnoreCase("")||spinnerBeratTransaksi.getValue().toString().equalsIgnoreCase("0")){
             JOptionPane.showMessageDialog(null, "Berat tidak boleh kosong", "Peringatan", JOptionPane.WARNING_MESSAGE);
-        }else if(cb_diskon.getSelectedItem().equals("")){
+        }else if(cb_diskon.getSelectedItem().toString().equalsIgnoreCase("")) {
             JOptionPane.showMessageDialog(null, "Diskon tidak boleh kosong", "Peringatan", JOptionPane.WARNING_MESSAGE);
-        }else if(cbTipeTransaksi.getSelectedItem().equals("")){
+        }else if(cbTipeTransaksi.getSelectedItem().toString().equalsIgnoreCase("")){
             JOptionPane.showMessageDialog(null, "Tipe tidak boleh kosong", "Peringatan", JOptionPane.WARNING_MESSAGE);
-        }else if(dcTanggalTransaksiMasuk.getDate().equals("")){
+        }else if(dcTanggalTransaksiMasuk.getDate().toString().equalsIgnoreCase("")){
             JOptionPane.showMessageDialog(null, "Tanggal masuk tidak boleh kosong", "Peringatan", JOptionPane.WARNING_MESSAGE);
-        }else if(dcTanggalTransaksiKeluar.getDate().equals("")){
+        }else if(dcTanggalTransaksiKeluar.getDate().toString().equalsIgnoreCase("")){
             JOptionPane.showMessageDialog(null, "Tanggal keluar boleh kosong", "Peringatan", JOptionPane.WARNING_MESSAGE);
         }else{
-            String id_tran, jns_member, jns_cuci, diskon, tp, tgl_msk, tgl_klr;
-            int id_pel, brt, ttl;
+            
             try {
                 id_tran = tf_idtrans.getText();
                 id_pel = Integer.valueOf(tf_id_pel.getText());
@@ -576,8 +564,8 @@ public class Transaksi extends javax.swing.JFrame {
             }
             
             tampilIdtrans();
-            tampilTablePelanggan();
             tampilTableTransaksi();
+            tampilTablePelanggan();
         }
     }//GEN-LAST:event_btnSimpanTransaksiActionPerformed
 
