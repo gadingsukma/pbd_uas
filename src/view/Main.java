@@ -1520,6 +1520,10 @@ public class Main extends javax.swing.JFrame {
             } else {
                 JOptionPane.showMessageDialog(null, "Data Berhasil di update");
             }
+            
+            cb_diskon_member.removeAllItems();
+            comboBoxDiskonMember();
+            
             tampilTableJenisMember();
             tampilIdJenisMember();
         } catch (Exception e) {
