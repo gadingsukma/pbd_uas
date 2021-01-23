@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="null" language="groovy" pageWidth="792" pageHeight="612" orientation="Landscape" columnWidth="752" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="6d48f9ea-f36f-4cdd-853a-055fc3bd1436">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="tgl_awal" class="java.lang.String"/>
+	<parameter name="tgl_akhir" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[SELECT * FROM TRANSAKSI WHERE TANGGAL_MASUK BETWEEN 
+TO_DATE($P{tgl_awal}, 'DD-MM-YYYY') AND TO_DATE($P{tgl_akhir}, 'DD-MM-YYYY')]]>
+	</queryString>
+	<field name="ID_TRANSAKSI" class="java.lang.String"/>
+	<field name="ID_PELANGGAN" class="java.math.BigDecimal"/>
+	<field name="ID_JENIS" class="java.math.BigDecimal"/>
+	<field name="ID_DISKON" class="java.math.BigDecimal"/>
+	<field name="TANGGAL_MASUK" class="java.sql.Timestamp"/>
+	<field name="TANGGAL_KELUAR" class="java.sql.Timestamp"/>
+	<field name="JENIS" class="java.lang.String"/>
+	<field name="BERAT" class="java.lang.Double"/>
+	<field name="TOTAL" class="java.math.BigDecimal"/>
+	<field name="TIPE" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="90" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="705b52dd-554a-4fa9-8687-e5b9e5ed54d2" x="242" y="19" width="269" height="41"/>
+				<textElement>
+					<font size="24"/>
+				</textElement>
+				<text><![CDATA[LAPORAN TRANSAKSI]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="26" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="4895a12a-5077-45e2-adeb-99c0d155f0cc" x="0" y="0" width="71" height="21"/>
+				<textElement>
+					<font size="14"/>
+				</textElement>
+				<text><![CDATA[PERIODE]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="5f352931-2478-470a-9a16-3a3194b84c88" x="85" y="1" width="100" height="20"/>
+				<textElement>
+					<font size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{tgl_awal}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="9fa40e04-9619-488d-a877-81719fd2d9d8" x="203" y="1" width="29" height="20"/>
+				<textElement>
+					<font size="14"/>
+				</textElement>
+				<text><![CDATA[S/D]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="879e4a5b-f4e6-4cf1-b807-077543cb20c9" x="253" y="1" width="100" height="20"/>
+				<textElement>
+					<font size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{tgl_akhir}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="33" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="a55cd62d-dc3b-443a-aa15-45a8f7183c30" x="0" y="0" width="100" height="20"/>
+				<textElement/>
+				<text><![CDATA[ID_TRANSAKSI]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="019ccc30-954f-4016-96c9-ae8dae03735a" x="121" y="0" width="100" height="20"/>
+				<textElement/>
+				<text><![CDATA[TANGGAL_MASUK]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="204e57ae-03b8-4e90-9e2e-6689910aad47" x="242" y="0" width="100" height="20"/>
+				<textElement/>
+				<text><![CDATA[TANGGAL_KELUAR]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="f84f5a85-967f-4686-b91e-ac2e41607afc" x="364" y="0" width="62" height="20"/>
+				<textElement/>
+				<text><![CDATA[JENIS]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="560c9af7-fbf2-4d55-bd6e-24f944fce6e7" x="447" y="0" width="64" height="20"/>
+				<textElement/>
+				<text><![CDATA[BERAT]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="e65c0ff7-127a-48bd-8b22-fd876b716b92" x="531" y="0" width="69" height="20"/>
+				<textElement/>
+				<text><![CDATA[TOTAL]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="905fc7fe-1688-4da0-a6db-49c8b6d78831" x="628" y="0" width="59" height="20"/>
+				<textElement/>
+				<text><![CDATA[TIPE]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="25" splitType="Stretch">
+			<textField>
+				<reportElement uuid="df9f015c-7177-4cff-950d-4d3faf49875e" x="0" y="0" width="100" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{ID_TRANSAKSI}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="c91c3b8d-f7cd-4c34-996e-1f549d63c933" x="121" y="0" width="100" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{TANGGAL_MASUK}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="aba9c884-20a4-4358-8dc9-df580e7e7d64" x="242" y="0" width="100" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{TANGGAL_KELUAR}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="bb274f0c-a601-4084-a8bd-8a6ffbd90c91" x="364" y="0" width="62" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{JENIS}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="d6f2ee3e-e172-4c63-9ab7-ad3357cbb5e2" x="447" y="0" width="64" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{BERAT}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="dd9c2e94-e194-4408-b60a-fba184543432" x="531" y="0" width="69" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{TOTAL}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="4ad8c4c1-573c-45b5-949e-f86d90ca5825" x="628" y="0" width="59" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{TIPE}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch">
+			<textField>
+				<reportElement uuid="f8f6350a-0350-4e37-9c5f-90da3e60d62e" x="628" y="34" width="100" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>

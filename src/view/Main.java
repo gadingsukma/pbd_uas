@@ -15,11 +15,18 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Types;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.HashMap;
 import javax.swing.JOptionPane;
 import javax.swing.RowFilter;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
 import model.Conn;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.view.JRViewer;
 
 /**
  *
@@ -39,7 +46,7 @@ public class Main extends javax.swing.JFrame {
     DefaultTableModel tblPelanggan = new DefaultTableModel(new Object[]{"ID Pelanggan", "ID Jenis Member", "Nama", "Alamat", "Telepon", "Status", "Poin"}, 0);
     DefaultTableModel tblJenis = new DefaultTableModel(new Object[]{"ID Jenis", "Nama Jenis", "Berat (kg)", "Harga"}, 0);
     DefaultTableModel tblMember = new DefaultTableModel(new Object[]{"ID Jenis Member", "Nama"}, 0);
-    DefaultTableModel tblDiskon = new DefaultTableModel(new Object[]{"ID Diskon", "Nama Diskon", "Jumlah Diskon (%)","Berat cucian"}, 0);
+    DefaultTableModel tblDiskon = new DefaultTableModel(new Object[]{"ID Diskon", "Nama Diskon", "Jumlah Diskon (%)", "Berat cucian"}, 0);
     DefaultTableModel tblMasalah = new DefaultTableModel(new Object[]{"ID Pelanggan", "ID Masalah", "Nama Barang", "Harga", "Deskripsi"}, 0);
 
     JDateChooser dateChooser = new JDateChooser();
@@ -245,7 +252,7 @@ public class Main extends javax.swing.JFrame {
             }
             p.close();
             tablePelanggan.setModel(tblPelanggan);
-            
+
             tfNamaPelanggan.setText(null);
             tfAlamatPelanggan.setText(null);
             tfTeleponPelanggan.setText(null);
@@ -311,14 +318,14 @@ public class Main extends javax.swing.JFrame {
 
             tblDiskon.setRowCount(0);
 
-            String idDiskon, namaDiskon, jumlahDiskon,brt;
+            String idDiskon, namaDiskon, jumlahDiskon, brt;
 
             while (rs.next()) {
                 idDiskon = rs.getString("ID_DISKON");
                 namaDiskon = rs.getString("NAMA_DISKON");
                 jumlahDiskon = rs.getString("JUMLAH_DISKON");
                 brt = rs.getString("BERAT");
-                tblDiskon.addRow(new Object[]{idDiskon, namaDiskon, jumlahDiskon,brt});
+                tblDiskon.addRow(new Object[]{idDiskon, namaDiskon, jumlahDiskon, brt});
             }
             tableDiskon.setModel(tblDiskon);
             tfNamaDiskon.setText(null);
@@ -463,7 +470,7 @@ public class Main extends javax.swing.JFrame {
         jLabel28 = new javax.swing.JLabel();
         tf_id_diskon = new javax.swing.JTextField();
         jLabel33 = new javax.swing.JLabel();
-        cb_diskon_member = new javax.swing.JComboBox<String>();
+        cb_diskon_member = new javax.swing.JComboBox<>();
         jLabel26 = new javax.swing.JLabel();
         jLabel34 = new javax.swing.JLabel();
         spinnerberatDiskon = new javax.swing.JSpinner();
@@ -490,6 +497,9 @@ public class Main extends javax.swing.JFrame {
         DateChooserTanggalCetakAkhirLaporanTransaksi = new com.toedter.calendar.JDateChooser();
         btnCetakLaporanTransaksi = new javax.swing.JButton();
         jLabel23 = new javax.swing.JLabel();
+        pane_trans = new javax.swing.JScrollPane();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
         jPanel7 = new javax.swing.JPanel();
         jLabel21 = new javax.swing.JLabel();
         tfHargaAwalLaporanMasalah = new javax.swing.JTextField();
@@ -820,7 +830,7 @@ public class Main extends javax.swing.JFrame {
                 .addGap(0, 0, Short.MAX_VALUE))
             .addComponent(jPanel12, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                .addContainerGap(19, Short.MAX_VALUE)
+                .addContainerGap(99, Short.MAX_VALUE)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(tf_search_jenis1, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel31, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -947,7 +957,7 @@ public class Main extends javax.swing.JFrame {
                             .addComponent(jLabel32))
                         .addGap(18, 18, 18)
                         .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 324, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(19, Short.MAX_VALUE))
+                .addContainerGap(99, Short.MAX_VALUE))
         );
 
         tabTransaksi.addTab("Member", jPanel8);
@@ -1061,7 +1071,7 @@ public class Main extends javax.swing.JFrame {
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel5Layout.createSequentialGroup()
-                .addComponent(jScrollPane5, javax.swing.GroupLayout.DEFAULT_SIZE, 347, Short.MAX_VALUE)
+                .addComponent(jScrollPane5, javax.swing.GroupLayout.DEFAULT_SIZE, 431, Short.MAX_VALUE)
                 .addGap(56, 56, 56))
             .addComponent(jPanel14, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(jPanel5Layout.createSequentialGroup()
@@ -1196,7 +1206,7 @@ public class Main extends javax.swing.JFrame {
                         .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(btnSimpanMasalah)
                             .addComponent(btnHapusFieldsMasalah))
-                        .addGap(0, 118, Short.MAX_VALUE))
+                        .addGap(0, 218, Short.MAX_VALUE))
                     .addGroup(jPanel9Layout.createSequentialGroup()
                         .addComponent(jScrollPane7, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                         .addGap(18, 18, 18)
@@ -1228,6 +1238,10 @@ public class Main extends javax.swing.JFrame {
         jLabel23.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         jLabel23.setText("Export Laporan Transaksi");
 
+        jLabel3.setText("Tanggal Awal");
+
+        jLabel4.setText("Tanggal Akhir");
+
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
         jPanel6.setLayout(jPanel6Layout);
         jPanel6Layout.setHorizontalGroup(
@@ -1235,34 +1249,47 @@ public class Main extends javax.swing.JFrame {
             .addGroup(jPanel6Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel13)
+                    .addComponent(pane_trans)
                     .addGroup(jPanel6Layout.createSequentialGroup()
-                        .addComponent(DateChooserTanggalCetakAwalLaporanTransaksi, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jLabel14)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(DateChooserTanggalCetakAkhirLaporanTransaksi, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jLabel23)
-                    .addComponent(btnCetakLaporanTransaksi))
-                .addContainerGap(580, Short.MAX_VALUE))
+                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel13)
+                            .addComponent(jLabel23)
+                            .addComponent(btnCetakLaporanTransaksi)
+                            .addGroup(jPanel6Layout.createSequentialGroup()
+                                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(jPanel6Layout.createSequentialGroup()
+                                        .addComponent(DateChooserTanggalCetakAwalLaporanTransaksi, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(jLabel14))
+                                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(DateChooserTanggalCetakAkhirLaporanTransaksi, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addGap(0, 585, Short.MAX_VALUE)))
+                .addContainerGap())
         );
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel6Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel23)
-                .addGap(18, 18, 18)
-                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(jPanel6Layout.createSequentialGroup()
-                        .addComponent(jLabel13)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(DateChooserTanggalCetakAwalLaporanTransaksi, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(DateChooserTanggalCetakAkhirLaporanTransaksi, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addComponent(jLabel14))
-                .addGap(18, 18, 18)
+                .addGap(12, 12, 12)
+                .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(8, 8, 8)
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel3)
+                    .addComponent(jLabel4))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jLabel14, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(DateChooserTanggalCetakAwalLaporanTransaksi, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(DateChooserTanggalCetakAkhirLaporanTransaksi, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnCetakLaporanTransaksi)
-                .addContainerGap(237, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(pane_trans, javax.swing.GroupLayout.DEFAULT_SIZE, 292, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         jTabbedPane1.addTab("Transaksi", jPanel6);
@@ -1309,7 +1336,7 @@ public class Main extends javax.swing.JFrame {
                     .addComponent(tfHargaAkhirLaporanMasalah, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(btnCetakLaporanMasalah)
-                .addContainerGap(237, Short.MAX_VALUE))
+                .addContainerGap(309, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Masalah", jPanel7);
@@ -1323,9 +1350,9 @@ public class Main extends javax.swing.JFrame {
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 403, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+                .addContainerGap()
+                .addComponent(jTabbedPane1)
+                .addContainerGap())
         );
 
         tabTransaksi.addTab("Laporan", jPanel4);
@@ -1359,15 +1386,15 @@ public class Main extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(tabTransaksi, javax.swing.GroupLayout.PREFERRED_SIZE, 433, javax.swing.GroupLayout.PREFERRED_SIZE))
             .addGroup(layout.createSequentialGroup()
                 .addGap(25, 25, 25)
                 .addComponent(btnLogout)
                 .addGap(35, 35, 35)
                 .addComponent(btnFormTransaksi, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(tabTransaksi))
         );
 
         pack();
@@ -1388,7 +1415,33 @@ public class Main extends javax.swing.JFrame {
     }//GEN-LAST:event_tabTransaksiStateChanged
 
     private void btnCetakLaporanTransaksiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCetakLaporanTransaksiActionPerformed
-        // TODO add your handling code here:
+        if (DateChooserTanggalCetakAwalLaporanTransaksi.getDate() == null) {
+            JOptionPane.showMessageDialog(null, "Tanggal awal tidak boleh kosong", "Peringatan", JOptionPane.WARNING_MESSAGE);
+        } else if (DateChooserTanggalCetakAkhirLaporanTransaksi.getDate() == null) {
+            JOptionPane.showMessageDialog(null, "Tanggal akhir boleh kosong", "Peringatan", JOptionPane.WARNING_MESSAGE);
+        } else {
+
+            String tgl_1, tgl_2;
+            try {
+                DateFormat dateFormat = new SimpleDateFormat("DD-MM-YYYY");
+                Date tgl1 = DateChooserTanggalCetakAwalLaporanTransaksi.getDate();
+                Date tgl2 = DateChooserTanggalCetakAkhirLaporanTransaksi.getDate();
+                tgl_1 = dateFormat.format(tgl1);
+                tgl_2 = dateFormat.format(tgl2);
+                HashMap param = new HashMap();
+                param.put("tgl_awal", tgl_1);
+                param.put("tgl_akhir", tgl_2);
+                JasperPrint jprint = JasperFillManager.fillReport(getClass().getResourceAsStream("LAPORAN.jasper"), param, connect);
+                JRViewer viewer = new JRViewer(jprint);
+                viewer.setOpaque(true);
+                viewer.setVisible(true);
+                pane_trans.add(viewer);
+                pane_trans.setViewportView(viewer);
+
+            } catch (Exception e) {
+                System.out.println(e);
+            }        // TODO add your handling code here:
+        }
     }//GEN-LAST:event_btnCetakLaporanTransaksiActionPerformed
 
     private void btnHapusFieldsMasalahActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHapusFieldsMasalahActionPerformed
@@ -1468,13 +1521,13 @@ public class Main extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnSimpanDiskonActionPerformed
 
-    private void tf_search_memberKeyPressed(java.awt.event.KeyEvent evt) {                                            
+    private void tf_search_memberKeyPressed(java.awt.event.KeyEvent evt) {
         // TODO add your handling code here:
         DefaultTableModel model = (DefaultTableModel) tableMember.getModel();
         TableRowSorter<DefaultTableModel> tr = new TableRowSorter<DefaultTableModel>(model);
         tableMember.setRowSorter(tr);
         tr.setRowFilter(RowFilter.regexFilter(tf_search_member1.getText().trim().toUpperCase()));
-    }                                           
+    }
 
     private void btnHapusFieldMemberActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHapusFieldMemberActionPerformed
         // TODO add your handling code here:
@@ -1533,13 +1586,13 @@ public class Main extends javax.swing.JFrame {
         tfNamaJenisMember.setText(tableMember.getValueAt(DataRow, 1).toString());
     }//GEN-LAST:event_tableMemberMouseClicked
 
-    private void tf_search_jenisKeyPressed(java.awt.event.KeyEvent evt) {                                           
+    private void tf_search_jenisKeyPressed(java.awt.event.KeyEvent evt) {
         // TODO add your handling code here:
         DefaultTableModel model = (DefaultTableModel) tableJenis.getModel();
         TableRowSorter<DefaultTableModel> tr = new TableRowSorter<DefaultTableModel>(model);
         tableJenis.setRowSorter(tr);
         tr.setRowFilter(RowFilter.regexFilter(tf_search_jenis1.getText().trim().toUpperCase()));
-    }                                          
+    }
 
     private void tableJenisMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableJenisMouseClicked
         // TODO add your handling code here:
@@ -1668,7 +1721,7 @@ public class Main extends javax.swing.JFrame {
                     JOptionPane.showMessageDialog(null, "Data tidak ditemukan");
                 }
                 tampilTablePelanggan();
-          
+
             } catch (Exception e) {
             }
         }
@@ -1701,8 +1754,7 @@ public class Main extends javax.swing.JFrame {
         tfAlamatPelanggan.setText(tablePelanggan.getValueAt(DataRow, 3).toString());
         tfTeleponPelanggan.setText(tablePelanggan.getValueAt(DataRow, 4).toString());
         cbStatusPelanggan.setSelectedItem(tablePelanggan.getValueAt(DataRow, 5).toString());
-        
-        
+
 //        tfHargaJenis.setText(tableJenis.getValueAt(DataRow, 3).toString());
     }//GEN-LAST:event_tablePelangganMouseClicked
 
@@ -1768,11 +1820,13 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel27;
     private javax.swing.JLabel jLabel28;
     private javax.swing.JLabel jLabel29;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel30;
     private javax.swing.JLabel jLabel31;
     private javax.swing.JLabel jLabel32;
     private javax.swing.JLabel jLabel33;
     private javax.swing.JLabel jLabel34;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
@@ -1798,6 +1852,7 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane6;
     private javax.swing.JScrollPane jScrollPane7;
     private javax.swing.JTabbedPane jTabbedPane1;
+    private javax.swing.JScrollPane pane_trans;
     private javax.swing.JSpinner spinnerBeratJenis;
     private javax.swing.JSpinner spinnerJumlahDiskon;
     private javax.swing.JSpinner spinnerberatDiskon;
@@ -1828,4 +1883,3 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JTextField tf_search_user;
     // End of variables declaration//GEN-END:variables
 }
-
