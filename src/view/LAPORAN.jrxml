@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="null" language="groovy" pageWidth="792" pageHeight="612" orientation="Landscape" columnWidth="752" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="6d48f9ea-f36f-4cdd-853a-055fc3bd1436">
 	<property name="ireport.zoom" value="1.3310000000000015"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.y" value="45"/>
 	<parameter name="tgl_awal" class="java.lang.String"/>
 	<parameter name="tgl_akhir" class="java.lang.String"/>
 	<queryString>
@@ -86,10 +86,6 @@ TO_DATE($P{tgl_awal}, 'DD-MM-YYYY') AND TO_DATE($P{tgl_akhir}, 'DD-MM-YYYY')]]>
 					<pen lineWidth="4.0"/>
 				</graphicElement>
 			</line>
-			<image>
-				<reportElement uuid="eb41c510-78ce-4940-9e4c-c9b0fdec1362" x="34" y="15" width="161" height="146"/>
-				<imageExpression><![CDATA["D:\\kuliah\\SEMESTER_5\\PBD\\pbd\\pbd\\src\\assets\\laundry.png"]]></imageExpression>
-			</image>
 		</band>
 	</title>
 	<pageHeader>
