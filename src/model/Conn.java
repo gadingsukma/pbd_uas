@@ -22,8 +22,8 @@ public class Conn {
             Class.forName("oracle.jdbc.driver.OracleDriver");
             System.out.println("");
             try {
-                connect = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:orcl", "uaspbd", "uaspbd");
-//                connect = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:orcl", "alvian2", "1234");
+//                connect = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:orcl", "uaspbd", "uaspbd");
+                connect = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:orcl", "alvian2", "1234");
                 System.out.println("(class)database ok");
             } catch (SQLException se) {
                 System.out.println("Koneksi database gagal " + se);
