@@ -541,6 +541,7 @@ public class Main extends javax.swing.JFrame {
         tfHargaAkhirLaporanMasalah = new javax.swing.JTextField();
         btnCetakLaporanMasalah = new javax.swing.JButton();
         jLabel24 = new javax.swing.JLabel();
+        scrollpanemasalah = new javax.swing.JScrollPane();
         jPanel9 = new javax.swing.JPanel();
         jLabel18 = new javax.swing.JLabel();
         jLabel19 = new javax.swing.JLabel();
@@ -1254,6 +1255,11 @@ public class Main extends javax.swing.JFrame {
 
         btnCetakLaporanMasalah.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/exportResize.png"))); // NOI18N
         btnCetakLaporanMasalah.setText("Cetak");
+        btnCetakLaporanMasalah.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCetakLaporanMasalahActionPerformed(evt);
+            }
+        });
 
         jLabel24.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         jLabel24.setText("Export Laporan Masalah");
@@ -1265,16 +1271,20 @@ public class Main extends javax.swing.JFrame {
             .addGroup(jPanel7Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel21)
+                    .addComponent(scrollpanemasalah)
                     .addGroup(jPanel7Layout.createSequentialGroup()
-                        .addComponent(tfHargaAwalLaporanMasalah, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jLabel22)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(tfHargaAkhirLaporanMasalah, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jLabel24)
-                    .addComponent(btnCetakLaporanMasalah))
-                .addContainerGap(720, Short.MAX_VALUE))
+                        .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel21)
+                            .addComponent(jLabel24)
+                            .addComponent(btnCetakLaporanMasalah)
+                            .addGroup(jPanel7Layout.createSequentialGroup()
+                                .addComponent(tfHargaAwalLaporanMasalah, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jLabel22)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(tfHargaAkhirLaporanMasalah, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(0, 725, Short.MAX_VALUE)))
+                .addContainerGap())
         );
         jPanel7Layout.setVerticalGroup(
             jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1290,7 +1300,9 @@ public class Main extends javax.swing.JFrame {
                     .addComponent(tfHargaAkhirLaporanMasalah, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(btnCetakLaporanMasalah)
-                .addContainerGap(511, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addComponent(scrollpanemasalah, javax.swing.GroupLayout.DEFAULT_SIZE, 487, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         jTabbedPane1.addTab("Masalah", jPanel7);
@@ -1619,9 +1631,18 @@ public class Main extends javax.swing.JFrame {
                 Date tgl2 = DateChooserTanggalCetakAkhirLaporanTransaksi.getDate();
                 tgl_1 = dateFormat.format(tgl1);
                 tgl_2 = dateFormat.format(tgl2);
+                String sql = "SELECT SUM(TOTAL) AS TOTAL, SUM(BERAT) AS BERAT FROM TRANSAKSI WHERE TANGGAL_MASUK BETWEEN \n"
+                        + "TO_DATE((?), 'DD-MM-YYYY') AND TO_DATE((?), 'DD-MM-YYYY')";
+                p = connect.prepareStatement(sql);
+                p.setString(1, tgl_1);
+                p.setString(2, tgl_2);
+                rs = p.executeQuery();
+                rs.next();
                 HashMap param = new HashMap();
                 param.put("tgl_awal", tgl_1);
                 param.put("tgl_akhir", tgl_2);
+                param.put("total", rs.getString("TOTAL"));
+                param.put("berat", rs.getString("BERAT"));
                 JasperPrint jprint = JasperFillManager.fillReport(getClass().getResourceAsStream("LAPORAN.jasper"), param, connect);
                 JRViewer viewer = new JRViewer(jprint);
                 viewer.setOpaque(true);
@@ -1637,7 +1658,7 @@ public class Main extends javax.swing.JFrame {
 
     private void btnHapusFieldsMasalahActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHapusFieldsMasalahActionPerformed
         // TODO add your handling code here:
-       int id_masalah = Integer.valueOf(tf_id_masalah.getText());
+        int id_masalah = Integer.valueOf(tf_id_masalah.getText());
         String sql;
         int result = JOptionPane.showConfirmDialog(null, "Apa anda yakin menghapus data dengan id " + id_masalah + " ini ?", null, JOptionPane.YES_NO_OPTION);
         if (result == JOptionPane.YES_OPTION) {
@@ -1649,7 +1670,7 @@ public class Main extends javax.swing.JFrame {
                 c.executeUpdate();
                 if (c.getInt(2) == 0) {
                     JOptionPane.showMessageDialog(null, "Maaf data tidak ditemukan");
-                }  else {
+                } else {
                     JOptionPane.showMessageDialog(null, "Data masalah berhasil dihapus");
                 }
                 tampilTableMasalah();
@@ -1679,7 +1700,7 @@ public class Main extends javax.swing.JFrame {
         int result = JOptionPane.showConfirmDialog(null, "Apa anda yakin menghapus data dengan id " + id_diskon + " ini ?", null, JOptionPane.YES_NO_OPTION);
         if (result == JOptionPane.YES_OPTION) {
             try {
-                sql = "{call HAPUS_DISKON(?,?)}";
+                sql = "{call HAPUS_DISKON(?,?,?)}";
                 c = connect.prepareCall(sql);
                 c.setString(1, id_diskon);
                 c.registerOutParameter(2, Types.INTEGER);
@@ -2076,6 +2097,34 @@ public class Main extends javax.swing.JFrame {
         tr.setRowFilter(RowFilter.regexFilter(tf_cari_mslh.getText().trim().toUpperCase()));
     }//GEN-LAST:event_tf_cari_mslhKeyPressed
 
+    private void btnCetakLaporanMasalahActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCetakLaporanMasalahActionPerformed
+        // TODO add your handling code here:
+        if (tfHargaAwalLaporanMasalah.getText().equals("")) {
+            JOptionPane.showMessageDialog(null, "Harga awal tidak boleh kosong", "Peringatan", JOptionPane.WARNING_MESSAGE);
+        } else if (tfHargaAkhirLaporanMasalah.getText().equals("")) {
+            JOptionPane.showMessageDialog(null, "Harga akhir boleh kosong", "Peringatan", JOptionPane.WARNING_MESSAGE);
+        } else {
+
+            String harga_awal, harga_akhir;
+            try {
+                harga_awal = tfHargaAwalLaporanMasalah.getText();
+                harga_akhir = tfHargaAkhirLaporanMasalah.getText();
+                HashMap param = new HashMap();
+                param.put("HARGA_AWAL", harga_awal);
+                param.put("HARGA_AKHIR", harga_akhir);
+                JasperPrint jprint = JasperFillManager.fillReport(getClass().getResourceAsStream("MASALAH.jasper"), param, connect);
+                JRViewer viewer = new JRViewer(jprint);
+                viewer.setOpaque(true);
+                viewer.setVisible(true);
+                scrollpanemasalah.add(viewer);
+                scrollpanemasalah.setViewportView(viewer);
+
+            } catch (Exception e) {
+                System.out.println(e);
+            }        // TODO add your handling code here:
+        }
+    }//GEN-LAST:event_btnCetakLaporanMasalahActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private com.toedter.calendar.JDateChooser DateChooserTanggalCetakAkhirLaporanTransaksi;
@@ -2160,6 +2209,7 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane7;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JScrollPane pane_trans;
+    private javax.swing.JScrollPane scrollpanemasalah;
     private javax.swing.JSpinner spinnerBeratJenis;
     private javax.swing.JSpinner spinnerJumlahDiskon;
     private javax.swing.JSpinner spinnerberatDiskon;

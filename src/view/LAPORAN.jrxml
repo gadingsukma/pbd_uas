@@ -2,9 +2,11 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="null" language="groovy" pageWidth="792" pageHeight="612" orientation="Landscape" columnWidth="752" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="6d48f9ea-f36f-4cdd-853a-055fc3bd1436">
 	<property name="ireport.zoom" value="1.3310000000000015"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="45"/>
+	<property name="ireport.y" value="162"/>
 	<parameter name="tgl_awal" class="java.lang.String"/>
 	<parameter name="tgl_akhir" class="java.lang.String"/>
+	<parameter name="total" class="java.lang.String"/>
+	<parameter name="berat" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[SELECT * FROM TRANSAKSI WHERE TANGGAL_MASUK BETWEEN 
 TO_DATE($P{tgl_awal}, 'DD-MM-YYYY') AND TO_DATE($P{tgl_akhir}, 'DD-MM-YYYY')]]>
@@ -159,7 +161,7 @@ TO_DATE($P{tgl_awal}, 'DD-MM-YYYY') AND TO_DATE($P{tgl_akhir}, 'DD-MM-YYYY')]]>
 		</band>
 	</columnHeader>
 	<detail>
-		<band height="25" splitType="Stretch">
+		<band height="24" splitType="Stretch">
 			<textField>
 				<reportElement uuid="d6f2ee3e-e172-4c63-9ab7-ad3357cbb5e2" x="473" y="3" width="34" height="20"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
@@ -208,7 +210,25 @@ TO_DATE($P{tgl_awal}, 'DD-MM-YYYY') AND TO_DATE($P{tgl_akhir}, 'DD-MM-YYYY')]]>
 		</band>
 	</detail>
 	<columnFooter>
-		<band height="45" splitType="Stretch"/>
+		<band height="22" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="8d514f34-ce1b-4f8c-bdb8-6de06327e2e6" x="0" y="2" width="54" height="20"/>
+				<textElement>
+					<font size="14"/>
+				</textElement>
+				<text><![CDATA[Total]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="7caa897a-88d9-418f-aead-5d35046b43a9" x="482" y="0" width="55" height="22"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$P{berat}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="ae80d9a4-e8f3-43de-a5b8-1e5b8d9442f8" x="554" y="0" width="45" height="22"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$P{total}]]></textFieldExpression>
+			</textField>
+		</band>
 	</columnFooter>
 	<pageFooter>
 		<band height="54" splitType="Stretch">
