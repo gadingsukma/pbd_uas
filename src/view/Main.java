@@ -353,7 +353,7 @@ public class Main extends javax.swing.JFrame {
 
     void tampilTableDiskon() {
         try {
-            String sql = "select * from DISKON order by ID_DISKON";
+            String sql = "select * from DISKON WHERE NAMA_DISKON !='TIDAK ADA' order by ID_DISKON";
             p = connect.prepareStatement(sql);
             rs = p.executeQuery();
 
