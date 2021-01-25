@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="null" language="groovy" pageWidth="792" pageHeight="612" orientation="Landscape" columnWidth="752" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="6d48f9ea-f36f-4cdd-853a-055fc3bd1436">
 	<property name="ireport.zoom" value="1.3310000000000015"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="162"/>
+	<property name="ireport.y" value="0"/>
 	<parameter name="tgl_awal" class="java.lang.String"/>
 	<parameter name="tgl_akhir" class="java.lang.String"/>
 	<parameter name="total" class="java.lang.String"/>
@@ -27,7 +27,7 @@ TO_DATE($P{tgl_awal}, 'DD-MM-YYYY') AND TO_DATE($P{tgl_akhir}, 'DD-MM-YYYY')]]>
 	<title>
 		<band height="190" splitType="Stretch">
 			<staticText>
-				<reportElement uuid="3664334a-1216-4434-a3a1-b46333966d2c" x="213" y="91" width="341" height="52"/>
+				<reportElement uuid="3664334a-1216-4434-a3a1-b46333966d2c" x="203" y="91" width="341" height="52"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="14"/>
 				</textElement>
@@ -48,7 +48,7 @@ TO_DATE($P{tgl_awal}, 'DD-MM-YYYY') AND TO_DATE($P{tgl_akhir}, 'DD-MM-YYYY')]]>
 				<textFieldExpression><![CDATA[$P{tgl_awal}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement uuid="705b52dd-554a-4fa9-8687-e5b9e5ed54d2" x="266" y="31" width="226" height="60"/>
+				<reportElement uuid="705b52dd-554a-4fa9-8687-e5b9e5ed54d2" x="256" y="31" width="226" height="60"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="36" isBold="true"/>
 				</textElement>
@@ -93,7 +93,7 @@ TO_DATE($P{tgl_awal}, 'DD-MM-YYYY') AND TO_DATE($P{tgl_akhir}, 'DD-MM-YYYY')]]>
 	<pageHeader>
 		<band height="86" splitType="Stretch">
 			<staticText>
-				<reportElement uuid="57a37058-40e3-4e1e-a8c8-e6a8aec7f830" x="277" y="26" width="215" height="35"/>
+				<reportElement uuid="57a37058-40e3-4e1e-a8c8-e6a8aec7f830" x="268" y="26" width="215" height="35"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="24" isUnderline="true"/>
 				</textElement>
@@ -210,21 +210,21 @@ TO_DATE($P{tgl_awal}, 'DD-MM-YYYY') AND TO_DATE($P{tgl_akhir}, 'DD-MM-YYYY')]]>
 		</band>
 	</detail>
 	<columnFooter>
-		<band height="22" splitType="Stretch">
+		<band height="34" splitType="Stretch">
 			<staticText>
-				<reportElement uuid="8d514f34-ce1b-4f8c-bdb8-6de06327e2e6" x="0" y="2" width="54" height="20"/>
+				<reportElement uuid="8d514f34-ce1b-4f8c-bdb8-6de06327e2e6" x="54" y="14" width="54" height="20"/>
 				<textElement>
 					<font size="14"/>
 				</textElement>
 				<text><![CDATA[Total]]></text>
 			</staticText>
 			<textField>
-				<reportElement uuid="7caa897a-88d9-418f-aead-5d35046b43a9" x="482" y="0" width="55" height="22"/>
+				<reportElement uuid="7caa897a-88d9-418f-aead-5d35046b43a9" x="482" y="12" width="55" height="22"/>
 				<textElement/>
 				<textFieldExpression><![CDATA[$P{berat}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement uuid="ae80d9a4-e8f3-43de-a5b8-1e5b8d9442f8" x="554" y="0" width="45" height="22"/>
+				<reportElement uuid="ae80d9a4-e8f3-43de-a5b8-1e5b8d9442f8" x="554" y="12" width="45" height="22"/>
 				<textElement/>
 				<textFieldExpression><![CDATA[$P{total}]]></textFieldExpression>
 			</textField>
