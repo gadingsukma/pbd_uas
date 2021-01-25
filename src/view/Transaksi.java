@@ -210,7 +210,7 @@ public class Transaksi extends javax.swing.JFrame {
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         tf_id_pel = new javax.swing.JTextField();
-        cb_diskon = new javax.swing.JComboBox<>();
+        cb_diskon = new javax.swing.JComboBox<String>();
         jLabel7 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
@@ -400,6 +400,11 @@ public class Transaksi extends javax.swing.JFrame {
 
         jLabel18.setText("Uang");
 
+        tf_uang.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tf_uangActionPerformed(evt);
+            }
+        });
         tf_uang.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 tf_uangKeyPressed(evt);
@@ -500,14 +505,12 @@ public class Transaksi extends javax.swing.JFrame {
                             .addComponent(jLabel17)
                             .addComponent(jLabel20))
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                .addComponent(tf_uang)
-                                .addComponent(tf_ttl_bayar)
-                                .addComponent(tf_diskon, javax.swing.GroupLayout.DEFAULT_SIZE, 162, Short.MAX_VALUE)
-                                .addComponent(tf_kembalian))
-                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(tf_ttl_harga)
-                                .addComponent(tf_poin, javax.swing.GroupLayout.PREFERRED_SIZE, 159, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(tf_uang, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(tf_ttl_bayar, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(tf_diskon, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 162, Short.MAX_VALUE)
+                            .addComponent(tf_kembalian, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(tf_ttl_harga)
+                            .addComponent(tf_poin, javax.swing.GroupLayout.PREFERRED_SIZE, 159, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(tf_ttl_poin, javax.swing.GroupLayout.DEFAULT_SIZE, 162, Short.MAX_VALUE))
                         .addGap(25, 25, 25)))
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -842,7 +845,7 @@ public class Transaksi extends javax.swing.JFrame {
 
                     tf_ttl_poin.setText(String.valueOf(ttl_hrg_poin));
                     tf_diskon.setText(String.valueOf(0));
-                    tf_ttl_bayar.setText(String.valueOf(ttl_hrg_poin));
+                    tf_ttl_bayar.setText(String.valueOf((int)ttl_hrg_poin));
                 }
 
             }
@@ -878,6 +881,10 @@ public class Transaksi extends javax.swing.JFrame {
             }
         }
     }//GEN-LAST:event_tf_uangKeyReleased
+
+    private void tf_uangActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tf_uangActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_tf_uangActionPerformed
 
     /**
      * @param args the command line arguments

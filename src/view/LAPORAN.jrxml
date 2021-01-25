@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="null" language="groovy" pageWidth="792" pageHeight="612" orientation="Landscape" columnWidth="752" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="6d48f9ea-f36f-4cdd-853a-055fc3bd1436">
-	<property name="ireport.zoom" value="1.3310000000000015"/>
-	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="162"/>
+	<property name="ireport.zoom" value="2.1435888100000056"/>
+	<property name="ireport.x" value="52"/>
+	<property name="ireport.y" value="238"/>
 	<parameter name="tgl_awal" class="java.lang.String"/>
 	<parameter name="tgl_akhir" class="java.lang.String"/>
 	<parameter name="total" class="java.lang.String"/>
@@ -210,24 +210,43 @@ TO_DATE($P{tgl_awal}, 'DD-MM-YYYY') AND TO_DATE($P{tgl_akhir}, 'DD-MM-YYYY')]]>
 		</band>
 	</detail>
 	<columnFooter>
-		<band height="22" splitType="Stretch">
+		<band height="35" splitType="Stretch">
+			<rectangle>
+				<reportElement uuid="6575114a-f899-45e1-980a-b8ab4e334352" x="540" y="9" width="85" height="20"/>
+			</rectangle>
+			<rectangle>
+				<reportElement uuid="ecb0d50e-0551-4126-8d80-1c0a211694e5" x="460" y="9" width="80" height="20"/>
+			</rectangle>
+			<rectangle>
+				<reportElement uuid="b5b9da1c-52c4-42e9-a11c-8100c239e3c6" x="57" y="9" width="403" height="20"/>
+			</rectangle>
 			<staticText>
-				<reportElement uuid="8d514f34-ce1b-4f8c-bdb8-6de06327e2e6" x="0" y="2" width="54" height="20"/>
+				<reportElement uuid="8d514f34-ce1b-4f8c-bdb8-6de06327e2e6" x="79" y="10" width="54" height="20"/>
 				<textElement>
 					<font size="14"/>
 				</textElement>
 				<text><![CDATA[Total]]></text>
 			</staticText>
 			<textField>
-				<reportElement uuid="7caa897a-88d9-418f-aead-5d35046b43a9" x="482" y="0" width="55" height="22"/>
-				<textElement/>
+				<reportElement uuid="7caa897a-88d9-418f-aead-5d35046b43a9" x="480" y="7" width="25" height="22"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$P{berat}]]></textFieldExpression>
 			</textField>
+			<staticText>
+				<reportElement uuid="8ffb9634-7730-4532-8722-710bcfd1dfb2" x="505" y="8" width="16" height="20"/>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[Kg]]></text>
+			</staticText>
 			<textField>
-				<reportElement uuid="ae80d9a4-e8f3-43de-a5b8-1e5b8d9442f8" x="554" y="0" width="45" height="22"/>
-				<textElement/>
+				<reportElement uuid="ae80d9a4-e8f3-43de-a5b8-1e5b8d9442f8" x="571" y="9" width="43" height="19"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$P{total}]]></textFieldExpression>
 			</textField>
+			<staticText>
+				<reportElement uuid="a61689b7-9695-4bd1-9580-5da92de1676c" x="554" y="8" width="17" height="20"/>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[Rp.]]></text>
+			</staticText>
 		</band>
 	</columnFooter>
 	<pageFooter>

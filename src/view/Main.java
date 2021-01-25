@@ -372,6 +372,7 @@ public class Main extends javax.swing.JFrame {
             tableDiskon.setModel(tblDiskon);
             tfNamaDiskon.setText(null);
             spinnerJumlahDiskon.setValue(0);
+            spinnerberatDiskon.setValue(0);
         } catch (SQLException se) {
             System.out.println(se);
         }
@@ -1804,6 +1805,7 @@ public class Main extends javax.swing.JFrame {
             }
             tampilTableJenisMember();
             tampilIdJenisMember();
+            comboBoxDiskonMember();
         } catch (Exception e) {
         }
     }//GEN-LAST:event_btnSimpanMemberActionPerformed

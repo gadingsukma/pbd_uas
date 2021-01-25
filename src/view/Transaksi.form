@@ -137,16 +137,12 @@
                               <Component id="jLabel20" alignment="0" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                              <Group type="103" alignment="0" groupAlignment="1" max="-2" attributes="0">
-                                  <Component id="tf_uang" alignment="1" max="32767" attributes="0"/>
-                                  <Component id="tf_ttl_bayar" alignment="1" max="32767" attributes="0"/>
-                                  <Component id="tf_diskon" alignment="1" pref="162" max="32767" attributes="0"/>
-                                  <Component id="tf_kembalian" alignment="1" max="32767" attributes="0"/>
-                              </Group>
-                              <Group type="103" alignment="0" groupAlignment="0" max="-2" attributes="0">
-                                  <Component id="tf_ttl_harga" max="32767" attributes="0"/>
-                                  <Component id="tf_poin" min="-2" pref="159" max="-2" attributes="0"/>
-                              </Group>
+                              <Component id="tf_uang" alignment="1" max="32767" attributes="0"/>
+                              <Component id="tf_ttl_bayar" alignment="1" max="32767" attributes="0"/>
+                              <Component id="tf_diskon" alignment="1" pref="162" max="32767" attributes="0"/>
+                              <Component id="tf_kembalian" alignment="1" max="32767" attributes="0"/>
+                              <Component id="tf_ttl_harga" max="32767" attributes="0"/>
+                              <Component id="tf_poin" min="-2" pref="159" max="-2" attributes="0"/>
                               <Component id="tf_ttl_poin" pref="162" max="32767" attributes="0"/>
                           </Group>
                           <EmptySpace min="25" pref="25" max="-2" attributes="0"/>
@@ -594,6 +590,7 @@
         </Component>
         <Component class="javax.swing.JTextField" name="tf_uang">
           <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="tf_uangActionPerformed"/>
             <EventHandler event="keyPressed" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="tf_uangKeyPressed"/>
             <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="tf_uangKeyReleased"/>
             <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="tf_uangKeyTyped"/>

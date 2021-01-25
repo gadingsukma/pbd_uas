@@ -386,6 +386,8 @@ public class AddEmployee extends javax.swing.JFrame {
                 System.out.println(e);
             }
         }
+        
+        tampilTableKaryawan();
 
     }//GEN-LAST:event_btnBatalAddActionPerformed
 
