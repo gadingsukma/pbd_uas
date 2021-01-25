@@ -56,7 +56,7 @@ public class Login extends javax.swing.JFrame {
             if (rs.next()) {
                 JOptionPane.showMessageDialog(null, "Success");
                 if (rs.getString("role").trim().equalsIgnoreCase("admin")) {
-                    new AddEmployee().setVisible(true);
+                    new AddEmployee(rs.getString("id_karyawan").toUpperCase()).setVisible(true);
                 } else {
                     new Main().setVisible(true);
                 }

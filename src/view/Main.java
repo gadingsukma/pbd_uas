@@ -79,12 +79,13 @@ public class Main extends javax.swing.JFrame {
         comboBoxDiskonMember();
 //        comboBoxPelanggan();
 //        tampilTableTransaksi();
-        tampilTablePelanggan();
+
         tampilTableJenis();
         tampilTableJenisMember();
         tampilTableDiskon();
         tampilTablemslhTrans();
         tampilTableMasalah();
+        tampilTablePelanggan();
         tampilIdJenis();
         tampilIdDiskon();
         tampilIdJenisMember();
@@ -288,7 +289,7 @@ public class Main extends javax.swing.JFrame {
                 telepon = rs.getString("TELEPON");
                 status = rs.getString("STATUS");
                 poin = rs.getString("POIN");
-
+                System.out.println(status);
                 tblPelanggan.addRow(new Object[]{idPelanggan, idJenisMember, nama, alamat, telepon, status, poin});
             }
             p.close();
@@ -860,8 +861,7 @@ public class Main extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 670, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addGap(407, 407, 407)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
                         .addComponent(jLabel31)
                         .addGap(27, 27, 27)
                         .addComponent(tf_search_jenis1, javax.swing.GroupLayout.PREFERRED_SIZE, 177, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -894,13 +894,13 @@ public class Main extends javax.swing.JFrame {
                 .addGap(0, 0, Short.MAX_VALUE))
             .addComponent(jPanel12, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                .addContainerGap(301, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(tf_search_jenis1, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel31, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 310, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(27, 27, 27))
+                .addGap(310, 310, 310))
         );
 
         tabTransaksi.addTab("Jenis", jPanel3);

@@ -29,7 +29,8 @@ public class AddEmployee extends javax.swing.JFrame {
     ResultSet rs = null;
     Statement s = null;
     private PreparedStatement p;
-
+    String idkar = null;
+    int dataRow;
     DefaultTableModel tblKaryawan = new DefaultTableModel(new Object[]{"ID Karyawan", "Nama", "Alamat", "Jenis Kelamin", "Telepon", "Password"}, 0);
 
     /**
@@ -37,11 +38,10 @@ public class AddEmployee extends javax.swing.JFrame {
      */
     public AddEmployee() {
         initComponents();
-        
+
         this.setLocationRelativeTo(null);
 
         btnTambahAdd.setBackground(Color.WHITE);
-      
 
         Conn conn = new Conn();
         conn.setConnections();
@@ -49,17 +49,29 @@ public class AddEmployee extends javax.swing.JFrame {
 
         tampilTableKaryawan();
     }
-    
+
+    public AddEmployee(String id) {
+        initComponents();
+        idkar = id;
+        this.setLocationRelativeTo(null);
+
+        btnTambahAdd.setBackground(Color.WHITE);
+
+        Conn conn = new Conn();
+        conn.setConnections();
+        connect = conn.getconnections();
+
+        tampilTableKaryawan();
+    }
+
     void tampilTableKaryawan() {
         try {
-            String sql = "select * from KARYAWAN order by ID_KARYAWAN";
+            String sql = "select * from KARYAWAN  WHERE ID_KARYAWAN != (?) order by ID_KARYAWAN";
             p = connect.prepareStatement(sql);
+            p.setString(1, idkar);
             rs = p.executeQuery();
-
             tblKaryawan.setRowCount(0);
-
             String idKar, nama, alamat, jk, telepon, password;
-
             while (rs.next()) {
                 idKar = rs.getString("ID_KARYAWAN");
                 nama = rs.getString("NAMA");
@@ -71,6 +83,13 @@ public class AddEmployee extends javax.swing.JFrame {
                 tblKaryawan.addRow(new Object[]{idKar, nama, alamat, jk, telepon, password});
             }
             p.close();
+
+            tfIdAdd.setText(null);
+            tfNamaAdd.setText(null);
+            tfAlamatAdd.setText(null);
+            tfTeleponAdd.setText(null);
+            tfPasswordAdd.setText(null);
+
             tableKaryawan.setModel(tblKaryawan);
         } catch (SQLException se) {
             System.out.println(se);
@@ -133,7 +152,12 @@ public class AddEmployee extends javax.swing.JFrame {
             }
         });
 
-        btnBatalAdd.setText("Batal");
+        btnBatalAdd.setText("Hapus");
+        btnBatalAdd.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBatalAddActionPerformed(evt);
+            }
+        });
 
         tableKaryawan.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -146,6 +170,11 @@ public class AddEmployee extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
+        tableKaryawan.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tableKaryawanMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(tableKaryawan);
 
         btnLogoutKaryawan.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/log-outResize.png"))); // NOI18N
@@ -259,41 +288,59 @@ public class AddEmployee extends javax.swing.JFrame {
 
     private void btnTambahAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTambahAddActionPerformed
         // TODO add your handling code here:
-
         String id_kar = tfIdAdd.getText().toUpperCase();
-        String sql;
-        try {
-            sql = "{call CK_IDKAR(?,?)}";
-            c = connect.prepareCall(sql);
-            c.setString(1, id_kar);
-            c.registerOutParameter(2, Types.INTEGER);
-            c.executeUpdate();
-            if (c.getInt(2) == 1) {
-                JOptionPane.showMessageDialog(null, "Maaf id karyawan sudah digunakan");
-            } else {
-                sql = "{call ADD_KARYAWAN(?,?,?,?,?,?,?)}";
+        if (id_kar.length() < 6 || id_kar.length() > 6) {
+            JOptionPane.showMessageDialog(null, "Panjang id karyawan harus 6");
+        } else {
+            String sql;
+            try {
+                sql = "{call CK_IDKAR(?,?)}";
                 c = connect.prepareCall(sql);
                 c.setString(1, id_kar);
-                c.setString(2, tfNamaAdd.getText().toUpperCase());
-                c.setString(3, tfAlamatAdd.getText().toUpperCase());
-                c.setString(4, cbJKAdd.getSelectedItem().toString().toUpperCase());
-                c.setString(5, tfTeleponAdd.getText());
-                c.setString(6, tfPasswordAdd.getText().toUpperCase());
-                c.setString(7, "KARYAWAN");
+                c.registerOutParameter(2, Types.INTEGER);
                 c.executeUpdate();
-                JOptionPane.showMessageDialog(null, "Data karyawan berhasil ditambah");
+                if (c.getInt(2) == 1) {
+                    int result = JOptionPane.showConfirmDialog(null, "Apa anda yakin update karyawan dengan id " + id_kar + " ini ?", null, JOptionPane.YES_NO_OPTION);
+                    if (result == JOptionPane.YES_OPTION) {
+                        sql = "{call ADD_KARYAWAN(?,?,?,?,?,?,?,?)}";
+                        c = connect.prepareCall(sql);
+                        c.setString(1, id_kar);
+                        c.setString(2, tfNamaAdd.getText().toUpperCase());
+                        c.setString(3, tfAlamatAdd.getText().toUpperCase());
+                        c.setString(4, cbJKAdd.getSelectedItem().toString().toUpperCase());
+                        c.setString(5, tfTeleponAdd.getText());
+                        c.setString(6, tfPasswordAdd.getText().toUpperCase());
+                        c.setString(7, "KARYAWAN");
+                        c.registerOutParameter(8, Types.INTEGER);
+                        c.executeUpdate();
+                        if (c.getInt(8) == 1) {
+                            JOptionPane.showMessageDialog(null, "Data karyawan berhasil di update");
+                        }
+                    }
+                } else {
+                    sql = "{call ADD_KARYAWAN(?,?,?,?,?,?,?,?)}";
+                    c = connect.prepareCall(sql);
+                    c.setString(1, id_kar);
+                    c.setString(2, tfNamaAdd.getText().toUpperCase());
+                    c.setString(3, tfAlamatAdd.getText().toUpperCase());
+                    c.setString(4, cbJKAdd.getSelectedItem().toString().toUpperCase());
+                    c.setString(5, tfTeleponAdd.getText());
+                    c.setString(6, tfPasswordAdd.getText().toUpperCase());
+                    c.setString(7, "KARYAWAN");
+                    c.registerOutParameter(8, Types.INTEGER);
+                    c.executeUpdate();
+                    if (c.getInt(8) == 0) {
+                        JOptionPane.showMessageDialog(null, "Data karyawan berhasil ditambah");
+                    }
+
+                }
+            } catch (SQLException e) {
+                System.out.println(e);
             }
-        } catch (SQLException e) {
-            System.out.println(e);
+
+            tampilTableKaryawan();
         }
-        
-        tfIdAdd.setText(null);
-        tfNamaAdd.setText(null);
-        tfAlamatAdd.setText(null);
-        tfTeleponAdd.setText(null);
-        tfPasswordAdd.setText(null);
-        
-        tampilTableKaryawan();
+
     }//GEN-LAST:event_btnTambahAddActionPerformed
 
     private void btnLogoutKaryawanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLogoutKaryawanActionPerformed
@@ -313,6 +360,45 @@ public class AddEmployee extends javax.swing.JFrame {
         new Transaksi().setVisible(true);
         this.setVisible(false);
     }//GEN-LAST:event_btnTransaksiActionPerformed
+
+    private void btnBatalAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBatalAddActionPerformed
+        // TODO add your handling code here:
+        String id_kar = tfIdAdd.getText().toUpperCase();
+        if (id_kar.length() < 6 || id_kar.length() > 6) {
+            JOptionPane.showMessageDialog(null, "Panjang id karyawan harus 6");
+        } else {
+            String sql;
+            try {
+                int result = JOptionPane.showConfirmDialog(null, "Apa anda yakin hapus data karyawan dengan id " + id_kar + " ini ?", null, JOptionPane.YES_NO_OPTION);
+                if (result == JOptionPane.YES_OPTION) {
+                    sql = "{call HAPUS_KARYAWAN(?,?)}";
+                    c = connect.prepareCall(sql);
+                    c.setString(1, id_kar);
+                    c.registerOutParameter(2, Types.INTEGER);
+                    c.executeUpdate();
+                    if (c.getInt(2) == 1) {
+                        JOptionPane.showMessageDialog(null, "Data karyawan berhasil di hapus");
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Data karyawan tidak ditemukan");
+                    }
+                }
+            } catch (SQLException e) {
+                System.out.println(e);
+            }
+        }
+
+    }//GEN-LAST:event_btnBatalAddActionPerformed
+
+    private void tableKaryawanMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableKaryawanMouseClicked
+        // TODO add your handling code here:
+        dataRow = tableKaryawan.getSelectedRow();
+        tfIdAdd.setText(tableKaryawan.getValueAt(dataRow, 0).toString());
+        tfNamaAdd.setText(tableKaryawan.getValueAt(dataRow, 1).toString());
+        tfAlamatAdd.setText(tableKaryawan.getValueAt(dataRow, 2).toString());
+        cbJKAdd.setSelectedItem(tableKaryawan.getValueAt(dataRow, 3).toString());
+        tfTeleponAdd.setText(tableKaryawan.getValueAt(dataRow, 4).toString());
+        tfPasswordAdd.setText(tableKaryawan.getValueAt(dataRow, 5).toString());
+    }//GEN-LAST:event_tableKaryawanMouseClicked
 
     /**
      * @param args the command line arguments

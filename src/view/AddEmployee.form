@@ -193,8 +193,11 @@
     </Component>
     <Component class="javax.swing.JButton" name="btnBatalAdd">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Batal"/>
+        <Property name="text" type="java.lang.String" value="Hapus"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnBatalAddActionPerformed"/>
+      </Events>
     </Component>
     <Container class="javax.swing.JScrollPane" name="jScrollPane1">
       <AuxValues>
@@ -241,6 +244,9 @@
               <TableHeader reorderingAllowed="true" resizingAllowed="true"/>
             </Property>
           </Properties>
+          <Events>
+            <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="tableKaryawanMouseClicked"/>
+          </Events>
         </Component>
       </SubComponents>
     </Container>
